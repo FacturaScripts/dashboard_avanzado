@@ -1,771 +1,736 @@
 {include="header"}
 
 <style>
-    .content-wrapper, .right-side {
-        background-color: #ecf0f5 !important;
-    }
-    .box-header h1{
-        text-align: center;
-        font-size:24px;
-        margin:0;
-    }
-    table td.hiddenRow {padding:0 !important;}
-    table {
-        text-align: left;
-    }
-    .accordion-toggle > td{
-        background: #e6f0ff;
-        border-bottom:1px solid #000;
-    }
-    .gastos {
-        color: red;
-    }
-    .icon{
-        width:2%;
-    }
-    .title {
-        width:13%;
-        color: black;
-        text-align: left;
-    }
-    .total {
-        width:7%;
-        color: black;
-        text-align: right;
-        background: #cce0ff !important;
-    }
-    .gastos .total {
-        color: red;
-    }
-    .porc{
-        width:6%;
-        background: #cce0ff !important;
-        text-align: right;
-    }
-    .month{
-        width:6%;
-        text-align: right;
-    }
-    small{
-        color:#737373;
-    }
-    thead{
-        font-size: 16px;
-        font-weight: bold;
-    }
-    .year-selector{
-        color:green;
-    }
-    .year-selector-input{
-        width:80%;
-        color:green;
-        border-color:green;
-        text-align:center;
-    }
-    .box-tools {
-        display:none;
-    }
-    .skin-blue .box-tools {
-        display:block;
-    }
-    .box-title{
-        font-weight: 600;
-    }
-    .skin-blue  .box-title{
-        font-weight: normal;
-    }
+   .content-wrapper, .right-side {
+      background-color: #ecf0f5 !important;
+   }
+   .box-header h1{
+      text-align: center;
+      font-size:24px;
+      margin:0;
+   }
+   table td.hiddenRow {padding:0 !important;}
+   table {
+      text-align: left;
+   }
+   .accordion-toggle > td{
+      background: #e6f0ff;
+      border-bottom:1px solid #000;
+   }
+   .gastos {
+      color: red;
+   }
+   .icon{
+      width:2%;
+   }
+   .title {
+      width:13%;
+      color: black;
+      text-align: left;
+   }
+   .total {
+      width:7%;
+      color: black;
+      text-align: right;
+      background: #cce0ff !important;
+   }
+   .gastos .total {
+      color: red;
+   }
+   .porc{
+      width:6%;
+      background: #cce0ff !important;
+      text-align: right;
+   }
+   .month{
+      width:6%;
+      text-align: right;
+   }
+   small{
+      color:#737373;
+   }
+   thead{
+      font-size: 16px;
+      font-weight: bold;
+   }
+   .year-selector{
+      color:green;
+   }
+   .year-selector-input{
+      width:80%;
+      color:green;
+      border-color:green;
+      text-align:center;
+   }
+   .box-tools {
+      display:none;
+   }
+   .skin-blue .box-tools {
+      display:block;
+   }
+   .box-title{
+      font-weight: 600;
+   }
+   .skin-blue  .box-title{
+      font-weight: normal;
+   }
 </style>
 
 <form class="form" name="f_dashboard_avanzado" action="{$fsc->url()}" method="post">
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="form-group">
-
-
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <div class="pull-left">
-                                <span class="btn-group">
-                                    <a class="btn btn-xs btn-default" href="{$fsc->url()}" title="Recargar la página">
-                                        <span class="glyphicon glyphicon-refresh"></span>
-                                    </a>
-                                    {if="$fsc->page->is_default()"}
-                                    <a class="btn btn-xs btn-default active" href="{$fsc->url()}&amp;default_page=FALSE" title="desmarcar como página de inicio">
-                                        <span class="glyphicon glyphicon-home"></span>
-                                    </a>
-                                    {else}
-                                    <a class="btn btn-xs btn-default" href="{$fsc->url()}&amp;default_page=TRUE" title="marcar como página de inicio">
-                                        <span class="glyphicon glyphicon-home"></span>
-                                    </a>
-                                    {/if}
-                                    <a class="btn btn-xs btn-default" href="index.php?page=dashboard_avanzado_config" title="opciones de dashboard avanzado">
-                                        <span class="glyphicon glyphicon-wrench"></span>
-                                    </a>
-                                </span>
-                            </div>
-                            <h1 class="">Resumen {$fsc->year}</h1>
-
-                            <div class="box-tools pull-right">
-
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-
-
-                            <div class="table-responsive">
-                                <table class="table" style="border-collapse:collapse;">
-                                    <thead>
-                                        <tr>
-                                            <td class="year-selector" colspan="2">SELECCIONAR AÑO</td>
-                                            <td class="porc"><strong>%&nbsp;&nbsp;&nbsp;</strong></td>
-                                            <td class="total"><strong>Total</strong></td>
-                                            <td class="month">Enero</td>
-                                            <td class="month">Febrero</td>
-                                            <td class="month">Marzo</td>
-                                            <td class="month">Abril</td>
-                                            <td class="month">Mayo</td>
-                                            <td class="month">Junio</td>
-                                            <td class="month">Julio</td>
-                                            <td class="month">Agosto</td>
-                                            <td class="month">Septiembre</td>
-                                            <td class="month">Octubre</td>
-                                            <td class="month">Noviembre</td>
-                                            <td class="month">Diciembre</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="year-selector" colspan="2">
-                                                <select name="year" class="form-control year-selector-input" onchange="this.form.submit();">
-                                                    {loop="$fsc->ejercicios"}
-                                                    <option value="{$value1->codejercicio}" {if="$fsc->year==$value1->codejercicio"}selected{/if}>{$value1->codejercicio}</option>
-                                                    {/loop}
-                                                </select></td>
-                                            <td class="porc">100 %</td>
-                                            <td class="total">
-                                                {if="$fsc->resultado[$fsc->year]['total_mes'][0]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][0])}{else}{$fsc->number}{/if}
-                                                <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][0]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][0])}{else}{$fsc->number}{/if}</small>
-                                            </td>
-                                            <td class="month">
-                                                {if="$fsc->resultado[$fsc->year]['total_mes'][1]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][1])}{else}{$fsc->number}{/if}
-                                                <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][1]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][1])}{else}{$fsc->number}{/if}</small>
-                                            </td>
-                                            <td class="month">
-                                                {if="$fsc->resultado[$fsc->year]['total_mes'][2]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][2])}{else}{$fsc->number}{/if}
-                                                <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][2]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][2])}{else}{$fsc->number}{/if}</small>
-                                            </td>
-                                            <td class="month">
-                                                {if="$fsc->resultado[$fsc->year]['total_mes'][3]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][3])}{else}{$fsc->number}{/if}
-                                                <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][3]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][3])}{else}{$fsc->number}{/if}</small>
-                                            </td>
-                                            <td class="month">
-                                                {if="$fsc->resultado[$fsc->year]['total_mes'][4]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][4])}{else}{$fsc->number}{/if}
-                                                <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][4]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][4])}{else}{$fsc->number}{/if}</small>
-                                            </td>
-                                            <td class="month">
-                                                {if="$fsc->resultado[$fsc->year]['total_mes'][5]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][5])}{else}{$fsc->number}{/if}
-                                                <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][5]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][5])}{else}{$fsc->number}{/if}</small>
-                                            </td>
-                                            <td class="month">
-                                                {if="$fsc->resultado[$fsc->year]['total_mes'][6]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][6])}{else}{$fsc->number}{/if}
-                                                <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][6]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][6])}{else}{$fsc->number}{/if}</small>
-                                            </td>
-                                            <td class="month">
-                                                {if="$fsc->resultado[$fsc->year]['total_mes'][7]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][7])}{else}{$fsc->number}{/if}
-                                                <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][7]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][7])}{else}{$fsc->number}{/if}</small>
-                                            </td>
-                                            <td class="month">
-                                                {if="$fsc->resultado[$fsc->year]['total_mes'][8]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][8])}{else}{$fsc->number}{/if}
-                                                <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][8]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][8])}{else}{$fsc->number}{/if}</small>
-                                            </td>
-                                            <td class="month">
-                                                {if="$fsc->resultado[$fsc->year]['total_mes'][9]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][9])}{else}{$fsc->number}{/if}
-                                                <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][9]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][9])}{else}{$fsc->number}{/if}</small>
-                                            </td>
-                                            <td class="month">
-                                                {if="$fsc->resultado[$fsc->year]['total_mes'][10]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][10])}{else}{$fsc->number}{/if}
-                                                <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][10]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][10])}{else}{$fsc->number}{/if}</small>
-                                            </td>
-                                            <td class="month">
-                                                {if="$fsc->resultado[$fsc->year]['total_mes'][11]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][11])}{else}{$fsc->number}{/if}
-                                                <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][11]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][11])}{else}{$fsc->number}{/if}</small>
-                                            </td>
-                                            <td class="month">
-                                                {if="$fsc->resultado[$fsc->year]['total_mes'][12]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][12])}{else}{$fsc->number}{/if}
-                                                <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][12]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][12])}{else}{$fsc->number}{/if}</small>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="box collapsed-box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">VENTAS</h3>
-
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-
-                            <table class="table table-responsive">
-                                <thead>
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="form-group">
+               <div class="box">
+                  <div class="box-header with-border">
+                     <div class="pull-left">
+                        <span class="btn-group">
+                           <a class="btn btn-xs btn-default" href="{$fsc->url()}" title="Recargar la página">
+                              <span class="glyphicon glyphicon-refresh"></span>
+                           </a>
+                           {if="$fsc->page->is_default()"}
+                           <a class="btn btn-xs btn-default active" href="{$fsc->url()}&amp;default_page=FALSE" title="desmarcar como página de inicio">
+                              <span class="glyphicon glyphicon-home"></span>
+                           </a>
+                           {else}
+                           <a class="btn btn-xs btn-default" href="{$fsc->url()}&amp;default_page=TRUE" title="marcar como página de inicio">
+                              <span class="glyphicon glyphicon-home"></span>
+                           </a>
+                           {/if}
+                           <a class="btn btn-xs btn-default" href="index.php?page=dashboard_avanzado_config" title="opciones de dashboard avanzado">
+                              <span class="glyphicon glyphicon-wrench"></span>
+                           </a>
+                        </span>
+                     </div>
+                     <h1 class="">Resumen {$fsc->year}</h1>
+                     <div class="box-tools pull-right"></div>
+                  </div>
+                  <div class="box-body">
+                     <div class="table-responsive">
+                        <table class="table" style="border-collapse:collapse;">
+                           <thead>
+                              <tr>
+                                 <td class="year-selector" colspan="2">SELECCIONAR AÑO</td>
+                                 <td class="porc"><strong>%&nbsp;&nbsp;&nbsp;</strong></td>
+                                 <td class="total"><strong>Total</strong></td>
+                                 <td class="month">Enero</td>
+                                 <td class="month">Febrero</td>
+                                 <td class="month">Marzo</td>
+                                 <td class="month">Abril</td>
+                                 <td class="month">Mayo</td>
+                                 <td class="month">Junio</td>
+                                 <td class="month">Julio</td>
+                                 <td class="month">Agosto</td>
+                                 <td class="month">Septiembre</td>
+                                 <td class="month">Octubre</td>
+                                 <td class="month">Noviembre</td>
+                                 <td class="month">Diciembre</td>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr>
+                                 <td class="year-selector" colspan="2">
+                                    <select name="year" class="form-control year-selector-input" onchange="this.form.submit();">
+                                       {loop="$fsc->ejercicios"}
+                                       <option value="{$value1->codejercicio}" {if="$fsc->year==$value1->codejercicio"}selected{/if}>{$value1->codejercicio}</option>
+                                       {/loop}
+                                    </select></td>
+                                 <td class="porc">100 %</td>
+                                 <td class="total">
+                                    {if="$fsc->resultado[$fsc->year]['total_mes'][0]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][0])}{else}{$fsc->number}{/if}
+                                    <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][0]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][0])}{else}{$fsc->number}{/if}</small>
+                                 </td>
+                                 <td class="month">
+                                    {if="$fsc->resultado[$fsc->year]['total_mes'][1]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][1])}{else}{$fsc->number}{/if}
+                                    <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][1]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][1])}{else}{$fsc->number}{/if}</small>
+                                 </td>
+                                 <td class="month">
+                                    {if="$fsc->resultado[$fsc->year]['total_mes'][2]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][2])}{else}{$fsc->number}{/if}
+                                    <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][2]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][2])}{else}{$fsc->number}{/if}</small>
+                                 </td>
+                                 <td class="month">
+                                    {if="$fsc->resultado[$fsc->year]['total_mes'][3]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][3])}{else}{$fsc->number}{/if}
+                                    <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][3]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][3])}{else}{$fsc->number}{/if}</small>
+                                 </td>
+                                 <td class="month">
+                                    {if="$fsc->resultado[$fsc->year]['total_mes'][4]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][4])}{else}{$fsc->number}{/if}
+                                    <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][4]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][4])}{else}{$fsc->number}{/if}</small>
+                                 </td>
+                                 <td class="month">
+                                    {if="$fsc->resultado[$fsc->year]['total_mes'][5]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][5])}{else}{$fsc->number}{/if}
+                                    <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][5]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][5])}{else}{$fsc->number}{/if}</small>
+                                 </td>
+                                 <td class="month">
+                                    {if="$fsc->resultado[$fsc->year]['total_mes'][6]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][6])}{else}{$fsc->number}{/if}
+                                    <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][6]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][6])}{else}{$fsc->number}{/if}</small>
+                                 </td>
+                                 <td class="month">
+                                    {if="$fsc->resultado[$fsc->year]['total_mes'][7]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][7])}{else}{$fsc->number}{/if}
+                                    <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][7]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][7])}{else}{$fsc->number}{/if}</small>
+                                 </td>
+                                 <td class="month">
+                                    {if="$fsc->resultado[$fsc->year]['total_mes'][8]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][8])}{else}{$fsc->number}{/if}
+                                    <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][8]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][8])}{else}{$fsc->number}{/if}</small>
+                                 </td>
+                                 <td class="month">
+                                    {if="$fsc->resultado[$fsc->year]['total_mes'][9]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][9])}{else}{$fsc->number}{/if}
+                                    <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][9]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][9])}{else}{$fsc->number}{/if}</small>
+                                 </td>
+                                 <td class="month">
+                                    {if="$fsc->resultado[$fsc->year]['total_mes'][10]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][10])}{else}{$fsc->number}{/if}
+                                    <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][10]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][10])}{else}{$fsc->number}{/if}</small>
+                                 </td>
+                                 <td class="month">
+                                    {if="$fsc->resultado[$fsc->year]['total_mes'][11]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][11])}{else}{$fsc->number}{/if}
+                                    <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][11]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][11])}{else}{$fsc->number}{/if}</small>
+                                 </td>
+                                 <td class="month">
+                                    {if="$fsc->resultado[$fsc->year]['total_mes'][12]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][12])}{else}{$fsc->number}{/if}
+                                    <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][12]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][12])}{else}{$fsc->number}{/if}</small>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+               <div class="box collapsed-box">
+                  <div class="box-header with-border">
+                     <h3 class="box-title">VENTAS</h3>
+                     <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                     </div>
+                  </div>
+                  <div class="box-body">
+                     <table class="table table-responsive">
+                        <thead>
+                           <tr>
+                              <td class="icon"></td>
+                              <td class="title"></td>
+                              <td class="porc"><strong>%&nbsp;&nbsp;&nbsp;</strong></td>
+                              <td class="total"><strong>Total</strong></td>
+                              <td class="month">Enero</td>
+                              <td class="month">Febrero</td>
+                              <td class="month">Marzo</td>
+                              <td class="month">Abril</td>
+                              <td class="month">Mayo</td>
+                              <td class="month">Junio</td>
+                              <td class="month">Julio</td>
+                              <td class="month">Agosto</td>
+                              <td class="month">Septiembre</td>
+                              <td class="month">Octubre</td>
+                              <td class="month">Noviembre</td>
+                              <td class="month">Diciembre</td>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {if="$fsc->ventas[$fsc->year]"}
+                           <tr>
+                              <td class="icon"></td>
+                              <td class="title"><strong></strong></td>
+                              <td class="porc">100 %</td>
+                              <td class="total">
+                                 {if="$fsc->ventas[$fsc->year]['total_mes'][0]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][0])}{else}{$fsc->number}{/if}
+                                 <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][0]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][0])}{else}{$fsc->number}{/if}</small>
+                              </td>
+                              <td class="month">
+                                 {if="$fsc->ventas[$fsc->year]['total_mes'][1]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][1])}{else}{$fsc->number}{/if}
+                                 <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][1]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][1])}{else}{$fsc->number}{/if}</small>
+                              </td>
+                              <td class="month">
+                                 {if="$fsc->ventas[$fsc->year]['total_mes'][2]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][2])}{else}{$fsc->number}{/if}
+                                 <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][2]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][2])}{else}{$fsc->number}{/if}</small>
+                              </td>
+                              <td class="month">
+                                 {if="$fsc->ventas[$fsc->year]['total_mes'][3]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][3])}{else}{$fsc->number}{/if}
+                                 <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][3]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][3])}{else}{$fsc->number}{/if}</small>
+                              </td>
+                              <td class="month">
+                                 {if="$fsc->ventas[$fsc->year]['total_mes'][4]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][4])}{else}{$fsc->number}{/if}
+                                 <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][4]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][4])}{else}{$fsc->number}{/if}</small>
+                              </td>
+                              <td class="month">
+                                 {if="$fsc->ventas[$fsc->year]['total_mes'][5]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][5])}{else}{$fsc->number}{/if}
+                                 <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][5]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][5])}{else}{$fsc->number}{/if}</small>
+                              </td>
+                              <td class="month">
+                                 {if="$fsc->ventas[$fsc->year]['total_mes'][6]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][6])}{else}{$fsc->number}{/if}
+                                 <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][6]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][6])}{else}{$fsc->number}{/if}</small>
+                              </td>
+                              <td class="month">
+                                 {if="$fsc->ventas[$fsc->year]['total_mes'][7]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][7])}{else}{$fsc->number}{/if}
+                                 <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][7]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][7])}{else}{$fsc->number}{/if}</small>
+                              </td>
+                              <td class="month">
+                                 {if="$fsc->ventas[$fsc->year]['total_mes'][8]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][8])}{else}{$fsc->number}{/if}
+                                 <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][8]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][8])}{else}{$fsc->number}{/if}</small>
+                              </td>
+                              <td class="month">
+                                 {if="$fsc->ventas[$fsc->year]['total_mes'][9]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][9])}{else}{$fsc->number}{/if}
+                                 <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][9]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][9])}{else}{$fsc->number}{/if}</small>
+                              </td>
+                              <td class="month">
+                                 {if="$fsc->ventas[$fsc->year]['total_mes'][10]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][10])}{else}{$fsc->number}{/if}
+                                 <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][10]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][10])}{else}{$fsc->number}{/if}</small>
+                              </td>
+                              <td class="month">
+                                 {if="$fsc->ventas[$fsc->year]['total_mes'][11]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][11])}{else}{$fsc->number}{/if}
+                                 <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][11]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][11])}{else}{$fsc->number}{/if}</small>
+                              </td>
+                              <td class="month">
+                                 {if="$fsc->ventas[$fsc->year]['total_mes'][12]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][12])}{else}{$fsc->number}{/if}
+                                 <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][12]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][12])}{else}{$fsc->number}{/if}</small>
+                              </td>
+                           </tr>
+                           {loop="$fsc->ventas[$fsc->year]['familias']"}
+                           <tr data-toggle="collapse" data-target="#ventas-{$counter1}" class="accordion-toggle ventas collapsed">
+                              <td class="icon"><div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></div></td>
+                              <td class="title" align="left">{$fsc->ventas[$fsc->year]['descripciones'][$key1]}</td>
+                              <td class="porc">{if="$fsc->ventas[$fsc->year]['porc_fam'][$key1]"}{$fsc->ventas[$fsc->year]['porc_fam'][$key1]} %{else}{$fsc->porc}{/if}</td>
+                              <td class="total">{if="$fsc->ventas[$fsc->year]['total_fam'][$key1]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam'][$key1])}{else}{$fsc->number}{/if}</td>
+                              <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][1]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][1])}{else}{$fsc->number}{/if}</td>
+                              <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][2]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][2])}{else}{$fsc->number}{/if}</td>
+                              <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][3]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][3])}{else}{$fsc->number}{/if}</td>
+                              <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][4]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][4])}{else}{$fsc->number}{/if}</td>
+                              <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][5]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][5])}{else}{$fsc->number}{/if}</td>
+                              <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][6]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][6])}{else}{$fsc->number}{/if}</td>
+                              <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][7]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][7])}{else}{$fsc->number}{/if}</td>
+                              <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][8]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][8])}{else}{$fsc->number}{/if}</td>
+                              <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][9]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][9])}{else}{$fsc->number}{/if}</td>
+                              <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][10]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][10])}{else}{$fsc->number}{/if}</td>
+                              <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][11]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][11])}{else}{$fsc->number}{/if}</td>
+                              <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][12]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][12])}{else}{$fsc->number}{/if}</td>
+                           </tr>
+                           <tr>
+                              <td colspan="16" class="hiddenRow">
+                                 <div class="accordian-body collapse" id="ventas-{$counter1}"> 
+                                    <table class="table table-hover table-responsive">
+                                       {loop="value1"}
+                                       <tr>
+                                          <td class="icon"></td>
+                                          <td class="title">({$key2}) {$fsc->ventas[$fsc->year]['descripciones'][$key2]}</td>
+                                          <td class="porc">{if="$fsc->ventas[$fsc->year]['porc_ref'][$key1][$key2]"}{$fsc->ventas[$fsc->year]['porc_ref'][$key1][$key2]} %{else}{$fsc->number}{/if}</td>
+                                          <td class="total">{if="$fsc->ventas[$fsc->year]['total_ref'][$key1][$key2]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_ref'][$key1][$key2])}{else}{$fsc->number}{/if}</td>
+                                          <td class="month">{if="$value2[1]['pvptotal']"}{$fsc->show_precio($value2[1]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                          <td class="month">{if="$value2[2]['pvptotal']"}{$fsc->show_precio($value2[2]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                          <td class="month">{if="$value2[3]['pvptotal']"}{$fsc->show_precio($value2[3]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                          <td class="month">{if="$value2[4]['pvptotal']"}{$fsc->show_precio($value2[4]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                          <td class="month">{if="$value2[5]['pvptotal']"}{$fsc->show_precio($value2[5]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                          <td class="month">{if="$value2[6]['pvptotal']"}{$fsc->show_precio($value2[6]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                          <td class="month">{if="$value2[7]['pvptotal']"}{$fsc->show_precio($value2[7]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                          <td class="month">{if="$value2[8]['pvptotal']"}{$fsc->show_precio($value2[8]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                          <td class="month">{if="$value2[9]['pvptotal']"}{$fsc->show_precio($value2[9]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                          <td class="month">{if="$value2[10]['pvptotal']"}{$fsc->show_precio($value2[10]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                          <td class="month">{if="$value2[11]['pvptotal']"}{$fsc->show_precio($value2[11]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                          <td class="month">{if="$value2[12]['pvptotal']"}{$fsc->show_precio($value2[12]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                       </tr>
+                                       {/loop}
+                                    </table>
+                                 </div>
+                              </td>
+                           </tr>
+                           {/loop}
+                        </tbody>
+                     </table>
+                     {/if}
+                  </div>
+               </div>
+            </div>
+            <div class="box collapsed-box">
+               <div class="box-header with-border">
+                  <h3 class="box-title">GASTOS</h3>
+                  <div class="box-tools pull-right">
+                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                  </div>
+               </div>
+               <div class="box-body">
+                  <table class="table table-hover" style="border-collapse:collapse;">
+                     <thead>
+                        <tr>
+                           <td class="icon"></td>
+                           <td class="title"></td>
+                           <td class="porc"><strong>%&nbsp;&nbsp;&nbsp;</strong></td>
+                           <td class="total"><strong>Total</strong></td>
+                           <td class="month">Enero</td>
+                           <td class="month">Febrero</td>
+                           <td class="month">Marzo</td>
+                           <td class="month">Abril</td>
+                           <td class="month">Mayo</td>
+                           <td class="month">Junio</td>
+                           <td class="month">Julio</td>
+                           <td class="month">Agosto</td>
+                           <td class="month">Septiembre</td>
+                           <td class="month">Octubre</td>
+                           <td class="month">Noviembre</td>
+                           <td class="month">Diciembre</td>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr class="gastos">
+                           <td class="icon"></td>
+                           <td class="title"><strong></strong></td>
+                           <td class="porc">100 %</td>
+                           <td class="total">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][0]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][0])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][0]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][0])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][1]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][1])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][1]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][1])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][2]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][2])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][2]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][2])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][3]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][3])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][3]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][3])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][4]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][4])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][4]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][4])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][5]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][5])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][5]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][5])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][6]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][6])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][6]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][6])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][7]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][7])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][7]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][7])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][8]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][8])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][8]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][8])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][9]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][9])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][9]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][9])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][10]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][10])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][10]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][10])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][11]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][11])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][11]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][11])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][12]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][12])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][12]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][12])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                        </tr>
+                        {loop="$fsc->gastos[$fsc->year]['cuentas']"}
+                        <tr data-toggle="collapse" data-target="#gastos-{$counter1}" class="accordion-toggle gastos">
+                           <td  class="icon"><div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></div></td>
+                           <td class="title" align="left">{$key1} {$fsc->gastos[$fsc->year]['descripciones'][$key1]}</td>
+                           <td class="porc">{if="$fsc->gastos[$fsc->year]['porc_cuenta'][$key1]"}{$fsc->gastos[$fsc->year]['porc_cuenta'][$key1]} %{else}{$fsc->porc}{/if}</td>
+                           <td class="total">{if="$fsc->gastos[$fsc->year]['total_cuenta'][$key1]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta'][$key1])}{else}{$fsc->number}{/if}</td>
+                           <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][1]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][1])}{else}{$fsc->number}{/if}</td>
+                           <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][2]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][2])}{else}{$fsc->number}{/if}</td>
+                           <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][3]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][3])}{else}{$fsc->number}{/if}</td>
+                           <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][4]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][4])}{else}{$fsc->number}{/if}</td>
+                           <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][5]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][5])}{else}{$fsc->number}{/if}</td>
+                           <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][6]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][6])}{else}{$fsc->number}{/if}</td>
+                           <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][7]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][7])}{else}{$fsc->number}{/if}</td>
+                           <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][8]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][8])}{else}{$fsc->number}{/if}</td>
+                           <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][9]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][9])}{else}{$fsc->number}{/if}</td>
+                           <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][10]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][10])}{else}{$fsc->number}{/if}</td>
+                           <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][11]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][11])}{else}{$fsc->number}{/if}</td>
+                           <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][12]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][12])}{else}{$fsc->number}{/if}</td>
+                        </tr>
+                        <tr>
+                           <td colspan="16" class="hiddenRow">
+                              <div class="accordian-body collapse" id="gastos-{$counter1}"> 
+                                 <table class="table table-hover table-responsive">
+                                    {loop="value1"}
                                     <tr>
-                                        <td class="icon"></td>
-                                        <td class="title"></td>
-                                        <td class="porc"><strong>%&nbsp;&nbsp;&nbsp;</strong></td>
-                                        <td class="total"><strong>Total</strong></td>
-                                        <td class="month">Enero</td>
-                                        <td class="month">Febrero</td>
-                                        <td class="month">Marzo</td>
-                                        <td class="month">Abril</td>
-                                        <td class="month">Mayo</td>
-                                        <td class="month">Junio</td>
-                                        <td class="month">Julio</td>
-                                        <td class="month">Agosto</td>
-                                        <td class="month">Septiembre</td>
-                                        <td class="month">Octubre</td>
-                                        <td class="month">Noviembre</td>
-                                        <td class="month">Diciembre</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    {if="$fsc->ventas[$fsc->year]"}
-                                    <tr>
-                                        <td class="icon"></td>
-                                        <td class="title"><strong></strong></td>
-                                        <td class="porc">100 %</td>
-                                        <td class="total">
-                                            {if="$fsc->ventas[$fsc->year]['total_mes'][0]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][0])}{else}{$fsc->number}{/if}
-                                            <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][0]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][0])}{else}{$fsc->number}{/if}</small>
-                                        </td>
-                                        <td class="month">
-                                            {if="$fsc->ventas[$fsc->year]['total_mes'][1]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][1])}{else}{$fsc->number}{/if}
-                                            <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][1]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][1])}{else}{$fsc->number}{/if}</small>
-                                        </td>
-                                        <td class="month">
-                                            {if="$fsc->ventas[$fsc->year]['total_mes'][2]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][2])}{else}{$fsc->number}{/if}
-                                            <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][2]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][2])}{else}{$fsc->number}{/if}</small>
-                                        </td>
-                                        <td class="month">
-                                            {if="$fsc->ventas[$fsc->year]['total_mes'][3]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][3])}{else}{$fsc->number}{/if}
-                                            <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][3]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][3])}{else}{$fsc->number}{/if}</small>
-                                        </td>
-                                        <td class="month">
-                                            {if="$fsc->ventas[$fsc->year]['total_mes'][4]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][4])}{else}{$fsc->number}{/if}
-                                            <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][4]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][4])}{else}{$fsc->number}{/if}</small>
-                                        </td>
-                                        <td class="month">
-                                            {if="$fsc->ventas[$fsc->year]['total_mes'][5]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][5])}{else}{$fsc->number}{/if}
-                                            <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][5]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][5])}{else}{$fsc->number}{/if}</small>
-                                        </td>
-                                        <td class="month">
-                                            {if="$fsc->ventas[$fsc->year]['total_mes'][6]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][6])}{else}{$fsc->number}{/if}
-                                            <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][6]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][6])}{else}{$fsc->number}{/if}</small>
-                                        </td>
-                                        <td class="month">
-                                            {if="$fsc->ventas[$fsc->year]['total_mes'][7]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][7])}{else}{$fsc->number}{/if}
-                                            <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][7]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][7])}{else}{$fsc->number}{/if}</small>
-                                        </td>
-                                        <td class="month">
-                                            {if="$fsc->ventas[$fsc->year]['total_mes'][8]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][8])}{else}{$fsc->number}{/if}
-                                            <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][8]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][8])}{else}{$fsc->number}{/if}</small>
-                                        </td>
-                                        <td class="month">
-                                            {if="$fsc->ventas[$fsc->year]['total_mes'][9]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][9])}{else}{$fsc->number}{/if}
-                                            <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][9]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][9])}{else}{$fsc->number}{/if}</small>
-                                        </td>
-                                        <td class="month">
-                                            {if="$fsc->ventas[$fsc->year]['total_mes'][10]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][10])}{else}{$fsc->number}{/if}
-                                            <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][10]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][10])}{else}{$fsc->number}{/if}</small>
-                                        </td>
-                                        <td class="month">
-                                            {if="$fsc->ventas[$fsc->year]['total_mes'][11]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][11])}{else}{$fsc->number}{/if}
-                                            <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][11]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][11])}{else}{$fsc->number}{/if}</small>
-                                        </td>
-                                        <td class="month">
-                                            {if="$fsc->ventas[$fsc->year]['total_mes'][12]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][12])}{else}{$fsc->number}{/if}
-                                            <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][12]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][12])}{else}{$fsc->number}{/if}</small>
-                                        </td>
-                                    </tr>
-                                    {loop="$fsc->ventas[$fsc->year]['familias']"}
-                                    <tr data-toggle="collapse" data-target="#ventas-{$counter1}" class="accordion-toggle ventas collapsed">
-                                        <td class="icon"><div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></div></td>
-                                        <td class="title" align="left">{$fsc->ventas[$fsc->year]['descripciones'][$key1]}</td>
-                                        <td class="porc">{if="$fsc->ventas[$fsc->year]['porc_fam'][$key1]"}{$fsc->ventas[$fsc->year]['porc_fam'][$key1]} %{else}{$fsc->porc}{/if}</td>
-                                        <td class="total">{if="$fsc->ventas[$fsc->year]['total_fam'][$key1]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam'][$key1])}{else}{$fsc->number}{/if}</td>
-                                        <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][1]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][1])}{else}{$fsc->number}{/if}</td>
-                                        <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][2]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][2])}{else}{$fsc->number}{/if}</td>
-                                        <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][3]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][3])}{else}{$fsc->number}{/if}</td>
-                                        <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][4]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][4])}{else}{$fsc->number}{/if}</td>
-                                        <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][5]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][5])}{else}{$fsc->number}{/if}</td>
-                                        <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][6]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][6])}{else}{$fsc->number}{/if}</td>
-                                        <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][7]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][7])}{else}{$fsc->number}{/if}</td>
-                                        <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][8]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][8])}{else}{$fsc->number}{/if}</td>
-                                        <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][9]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][9])}{else}{$fsc->number}{/if}</td>
-                                        <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][10]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][10])}{else}{$fsc->number}{/if}</td>
-                                        <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][11]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][11])}{else}{$fsc->number}{/if}</td>
-                                        <td class="month">{if="$fsc->ventas[$fsc->year]['total_fam_mes'][$key1][12]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_fam_mes'][$key1][12])}{else}{$fsc->number}{/if}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td colspan="16" class="hiddenRow">
-                                            <div class="accordian-body collapse" id="ventas-{$counter1}"> 
-                                                <table class="table table-hover table-responsive">
-                                                    {loop="value1"}
-                                                    <tr>
-                                                        <td class="icon"></td>
-                                                        <td class="title">({$key2}) {$fsc->ventas[$fsc->year]['descripciones'][$key2]}</td>
-                                                        <td class="porc">{if="$fsc->ventas[$fsc->year]['porc_ref'][$key1][$key2]"}{$fsc->ventas[$fsc->year]['porc_ref'][$key1][$key2]} %{else}{$fsc->number}{/if}</td>
-                                                        <td class="total">{if="$fsc->ventas[$fsc->year]['total_ref'][$key1][$key2]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_ref'][$key1][$key2])}{else}{$fsc->number}{/if}</td>
-                                                        <td class="month">{if="$value2[1]['pvptotal']"}{$fsc->show_precio($value2[1]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                        <td class="month">{if="$value2[2]['pvptotal']"}{$fsc->show_precio($value2[2]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                        <td class="month">{if="$value2[3]['pvptotal']"}{$fsc->show_precio($value2[3]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                        <td class="month">{if="$value2[4]['pvptotal']"}{$fsc->show_precio($value2[4]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                        <td class="month">{if="$value2[5]['pvptotal']"}{$fsc->show_precio($value2[5]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                        <td class="month">{if="$value2[6]['pvptotal']"}{$fsc->show_precio($value2[6]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                        <td class="month">{if="$value2[7]['pvptotal']"}{$fsc->show_precio($value2[7]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                        <td class="month">{if="$value2[8]['pvptotal']"}{$fsc->show_precio($value2[8]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                        <td class="month">{if="$value2[9]['pvptotal']"}{$fsc->show_precio($value2[9]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                        <td class="month">{if="$value2[10]['pvptotal']"}{$fsc->show_precio($value2[10]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                        <td class="month">{if="$value2[11]['pvptotal']"}{$fsc->show_precio($value2[11]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                        <td class="month">{if="$value2[12]['pvptotal']"}{$fsc->show_precio($value2[12]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                    </tr>
-                                                    {/loop}
-                                                </table>
-                                            </div>
-                                        </td>
+                                       <td class="icon"></td>
+                                       <td class="title" class="hiddenRow title">{$key2} {$fsc->gastos[$fsc->year]['descripciones'][$key2]}</td>
+                                       <td class="porc">{if="$fsc->gastos[$fsc->year]['porc_subcuenta'][$key1][$key2]"}{$fsc->gastos[$fsc->year]['porc_subcuenta'][$key1][$key2]} %{else}{$fsc->number}{/if}</td>
+                                       <td class="total">{if="$fsc->gastos[$fsc->year]['total_subcuenta'][$key1][$key2]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_subcuenta'][$key1][$key2])}{else}{$fsc->number}{/if}</td>
+                                       <td class="month">{if="$value2[1]['pvptotal']"}{$fsc->show_precio($value2[1]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                       <td class="month">{if="$value2[2]['pvptotal']"}{$fsc->show_precio($value2[2]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                       <td class="month">{if="$value2[3]['pvptotal']"}{$fsc->show_precio($value2[3]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                       <td class="month">{if="$value2[4]['pvptotal']"}{$fsc->show_precio($value2[4]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                       <td class="month">{if="$value2[5]['pvptotal']"}{$fsc->show_precio($value2[5]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                       <td class="month">{if="$value2[6]['pvptotal']"}{$fsc->show_precio($value2[6]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                       <td class="month">{if="$value2[7]['pvptotal']"}{$fsc->show_precio($value2[7]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                       <td class="month">{if="$value2[8]['pvptotal']"}{$fsc->show_precio($value2[8]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                       <td class="month">{if="$value2[9]['pvptotal']"}{$fsc->show_precio($value2[9]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                       <td class="month">{if="$value2[10]['pvptotal']"}{$fsc->show_precio($value2[10]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                       <td class="month">{if="$value2[11]['pvptotal']"}{$fsc->show_precio($value2[11]['pvptotal'])}{else}{$fsc->number}{/if}</td>
+                                       <td class="month">{if="$value2[12]['pvptotal']"}{$fsc->show_precio($value2[12]['pvptotal'])}{else}{$fsc->number}{/if}</td>
                                     </tr>
                                     {/loop}
-                                </tbody>
-                            </table>
-
-                            {/if}
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="box collapsed-box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">GASTOS</h3>
-
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <table class="table table-hover" style="border-collapse:collapse;">
-                            <thead>
-                                <tr>
-                                    <td class="icon"></td>
-                                    <td class="title"></td>
-                                    <td class="porc"><strong>%&nbsp;&nbsp;&nbsp;</strong></td>
-                                    <td class="total"><strong>Total</strong></td>
-                                    <td class="month">Enero</td>
-                                    <td class="month">Febrero</td>
-                                    <td class="month">Marzo</td>
-                                    <td class="month">Abril</td>
-                                    <td class="month">Mayo</td>
-                                    <td class="month">Junio</td>
-                                    <td class="month">Julio</td>
-                                    <td class="month">Agosto</td>
-                                    <td class="month">Septiembre</td>
-                                    <td class="month">Octubre</td>
-                                    <td class="month">Noviembre</td>
-                                    <td class="month">Diciembre</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="gastos">
-                                    <td class="icon"></td>
-                                    <td class="title"><strong></strong></td>
-                                    <td class="porc">100 %</td>
-                                    <td class="total">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][0]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][0])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][0]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][0])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][1]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][1])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][1]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][1])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][2]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][2])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][2]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][2])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][3]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][3])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][3]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][3])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][4]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][4])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][4]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][4])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][5]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][5])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][5]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][5])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][6]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][6])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][6]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][6])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][7]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][7])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][7]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][7])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][8]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][8])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][8]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][8])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][9]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][9])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][9]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][9])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][10]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][10])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][10]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][10])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][11]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][11])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][11]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][11])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][12]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][12])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][12]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][12])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                </tr>
-                                {loop="$fsc->gastos[$fsc->year]['cuentas']"}
-                                <tr data-toggle="collapse" data-target="#gastos-{$counter1}" class="accordion-toggle gastos">
-                                    <td  class="icon"><div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></div></td>
-                                    <td class="title" align="left">{$key1} {$fsc->gastos[$fsc->year]['descripciones'][$key1]}</td>
-                                    <td class="porc">{if="$fsc->gastos[$fsc->year]['porc_cuenta'][$key1]"}{$fsc->gastos[$fsc->year]['porc_cuenta'][$key1]} %{else}{$fsc->porc}{/if}</td>
-                                    <td class="total">{if="$fsc->gastos[$fsc->year]['total_cuenta'][$key1]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta'][$key1])}{else}{$fsc->number}{/if}</td>
-                                    <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][1]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][1])}{else}{$fsc->number}{/if}</td>
-                                    <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][2]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][2])}{else}{$fsc->number}{/if}</td>
-                                    <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][3]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][3])}{else}{$fsc->number}{/if}</td>
-                                    <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][4]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][4])}{else}{$fsc->number}{/if}</td>
-                                    <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][5]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][5])}{else}{$fsc->number}{/if}</td>
-                                    <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][6]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][6])}{else}{$fsc->number}{/if}</td>
-                                    <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][7]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][7])}{else}{$fsc->number}{/if}</td>
-                                    <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][8]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][8])}{else}{$fsc->number}{/if}</td>
-                                    <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][9]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][9])}{else}{$fsc->number}{/if}</td>
-                                    <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][10]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][10])}{else}{$fsc->number}{/if}</td>
-                                    <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][11]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][11])}{else}{$fsc->number}{/if}</td>
-                                    <td class="month">{if="$fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][12]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_cuenta_mes'][$key1][12])}{else}{$fsc->number}{/if}</td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="16" class="hiddenRow">
-                                        <div class="accordian-body collapse" id="gastos-{$counter1}"> 
-                                            <table class="table table-hover table-responsive">
-                                                {loop="value1"}
-                                                <tr>
-                                                    <td class="icon"></td>
-                                                    <td class="title" class="hiddenRow title">{$key2} {$fsc->gastos[$fsc->year]['descripciones'][$key2]}</td>
-                                                    <td class="porc">{if="$fsc->gastos[$fsc->year]['porc_subcuenta'][$key1][$key2]"}{$fsc->gastos[$fsc->year]['porc_subcuenta'][$key1][$key2]} %{else}{$fsc->number}{/if}</td>
-                                                    <td class="total">{if="$fsc->gastos[$fsc->year]['total_subcuenta'][$key1][$key2]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_subcuenta'][$key1][$key2])}{else}{$fsc->number}{/if}</td>
-                                                    <td class="month">{if="$value2[1]['pvptotal']"}{$fsc->show_precio($value2[1]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                    <td class="month">{if="$value2[2]['pvptotal']"}{$fsc->show_precio($value2[2]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                    <td class="month">{if="$value2[3]['pvptotal']"}{$fsc->show_precio($value2[3]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                    <td class="month">{if="$value2[4]['pvptotal']"}{$fsc->show_precio($value2[4]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                    <td class="month">{if="$value2[5]['pvptotal']"}{$fsc->show_precio($value2[5]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                    <td class="month">{if="$value2[6]['pvptotal']"}{$fsc->show_precio($value2[6]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                    <td class="month">{if="$value2[7]['pvptotal']"}{$fsc->show_precio($value2[7]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                    <td class="month">{if="$value2[8]['pvptotal']"}{$fsc->show_precio($value2[8]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                    <td class="month">{if="$value2[9]['pvptotal']"}{$fsc->show_precio($value2[9]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                    <td class="month">{if="$value2[10]['pvptotal']"}{$fsc->show_precio($value2[10]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                    <td class="month">{if="$value2[11]['pvptotal']"}{$fsc->show_precio($value2[11]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                    <td class="month">{if="$value2[12]['pvptotal']"}{$fsc->show_precio($value2[12]['pvptotal'])}{else}{$fsc->number}{/if}</td>
-                                                </tr>
-                                                {/loop}
-                                            </table>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {/loop}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">RESUMEN</h3>
-
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <td class="icon"></td>
-                                    <td class="title"></td>
-                                    <td class="porc">Media Mensual</td>
-                                    <td class="total"><strong>Total</strong></td>
-                                    <td class="month">Enero</td>
-                                    <td class="month">Febrero</td>
-                                    <td class="month">Marzo</td>
-                                    <td class="month">Abril</td>
-                                    <td class="month">Mayo</td>
-                                    <td class="month">Junio</td>
-                                    <td class="month">Julio</td>
-                                    <td class="month">Agosto</td>
-                                    <td class="month">Septiembre</td>
-                                    <td class="month">Octubre</td>
-                                    <td class="month">Noviembre</td>
-                                    <td class="month">Diciembre</td>
-                                </tr>
-                            </thead>
-                            <tbody
-                                <tr>
-                                    <td class="icon"></td>
-                                    <td class="title"><strong>VENTAS</strong></td>
-                                    <td class="porc">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes']['media']"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes']['media'])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes']['media']"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes']['media'])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="total">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes'][0]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][0])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][0]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][0])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes'][1]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][1])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][1]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][1])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes'][2]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][2])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][2]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][2])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes'][3]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][3])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][3]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][3])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes'][4]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][4])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][4]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][4])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes'][5]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][5])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][5]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][5])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes'][6]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][6])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][6]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][6])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes'][7]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][7])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][7]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][7])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes'][8]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][8])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][8]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][8])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes'][9]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][9])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][9]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][9])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes'][10]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][10])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][10]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][10])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes'][11]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][11])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][11]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][11])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->ventas[$fsc->year]['total_mes'][12]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][12])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][12]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][12])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                </tr>
-
-                                <tr class="gastos">
-                                    <td class="icon"></td>
-                                    <td class="title"><strong>GASTOS</strong></td>
-                                    <td class="porc">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes']['media']"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes']['media'])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes']['media']"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes']['media'])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="total">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][0]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][0])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][0]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][0])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][1]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][1])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][1]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][1])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][2]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][2])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][2]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][2])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][3]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][3])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][3]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][3])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][4]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][4])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][4]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][4])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][5]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][5])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][5]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][5])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][6]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][6])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][6]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][6])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][7]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][7])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][7]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][7])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][8]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][8])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][8]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][8])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][9]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][9])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][9]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][9])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][10]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][10])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][10]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][10])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][11]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][11])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][11]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][11])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->gastos[$fsc->year]['total_mes'][12]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][12])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][12]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][12])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="icon"></td>
-                                    <td class="title"><strong>RESULTADO</strong></td>
-                                    <td class="porc">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes']['media']"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes']['media'])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes']['media']"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes']['media'])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="total">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes'][0]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][0])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][0]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][0])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes'][1]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][1])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][1]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][1])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes'][2]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][2])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][2]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][2])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes'][3]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][3])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][3]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][3])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes'][4]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][4])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][4]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][4])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes'][5]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][5])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][5]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][5])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes'][6]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][6])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][6]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][6])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes'][7]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][7])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][7]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][7])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes'][8]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][8])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][8]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][8])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes'][9]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][9])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][9]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][9])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes'][10]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][10])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][10]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][10])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes'][11]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][11])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][11]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][11])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                    <td class="month">
-                                        {if="$fsc->resultado[$fsc->year]['total_mes'][12]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][12])}{else}{$fsc->number}{/if}
-                                        <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][12]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][12])}{else}{$fsc->number}{/if}</small>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="box">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Resultado Anual</h3>
-
-                                <div class="box-tools pull-right">
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                                </div>
-                            </div>
-                            
-                            <div class="box-body">
-                                <canvas id="resultado-canvas"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="box">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Distribución de Ventas</h3>
-
-                                <div class="box-tools pull-right">
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="box-body">
-                                    <canvas id="distribucion-canvas"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <script>
-                    var dataVentas = [{loop="$fsc->charts['totales']['ventas']"}{$value1},{/loop}];
-                    var dataGastos = [{loop="$fsc->charts['totales']['gastos']"}{$value1},{/loop}];
-                    var dataResultado = [{loop="$fsc->charts['totales']['resultado']"}{$value1},{/loop}];
-                            
-                    var distribucionLabels = {$fsc->charts['distribucion']['labels']};
-                    var distribucionPorc = {$fsc->charts['distribucion']['porc']};
-                    var distribucionColor = {$fsc->charts['distribucion']['colors']};
-       
-                </script>
-
+                                 </table>
+                              </div>
+                           </td>
+                        </tr>
+                        {/loop}
+                     </tbody>
+                  </table>
+               </div>
             </div>
-        </div>
-    </div>
-</div>
-
+            <div class="box">
+               <div class="box-header with-border">
+                  <h3 class="box-title">RESUMEN</h3>
+                  <div class="box-tools pull-right">
+                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                  </div>
+               </div>
+               <div class="box-body">
+                  <table class="table table-hover">
+                     <thead>
+                        <tr>
+                           <td class="icon"></td>
+                           <td class="title"></td>
+                           <td class="porc">Media Mensual</td>
+                           <td class="total"><strong>Total</strong></td>
+                           <td class="month">Enero</td>
+                           <td class="month">Febrero</td>
+                           <td class="month">Marzo</td>
+                           <td class="month">Abril</td>
+                           <td class="month">Mayo</td>
+                           <td class="month">Junio</td>
+                           <td class="month">Julio</td>
+                           <td class="month">Agosto</td>
+                           <td class="month">Septiembre</td>
+                           <td class="month">Octubre</td>
+                           <td class="month">Noviembre</td>
+                           <td class="month">Diciembre</td>
+                        </tr>
+                     </thead>
+                     <tbody
+                        <tr>
+                           <td class="icon"></td>
+                           <td class="title"><strong>VENTAS</strong></td>
+                           <td class="porc">
+                              {if="$fsc->ventas[$fsc->year]['total_mes']['media']"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes']['media'])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes']['media']"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes']['media'])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="total">
+                              {if="$fsc->ventas[$fsc->year]['total_mes'][0]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][0])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][0]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][0])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->ventas[$fsc->year]['total_mes'][1]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][1])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][1]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][1])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->ventas[$fsc->year]['total_mes'][2]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][2])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][2]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][2])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->ventas[$fsc->year]['total_mes'][3]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][3])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][3]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][3])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->ventas[$fsc->year]['total_mes'][4]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][4])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][4]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][4])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->ventas[$fsc->year]['total_mes'][5]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][5])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][5]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][5])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->ventas[$fsc->year]['total_mes'][6]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][6])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][6]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][6])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->ventas[$fsc->year]['total_mes'][7]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][7])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][7]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][7])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->ventas[$fsc->year]['total_mes'][8]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][8])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][8]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][8])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->ventas[$fsc->year]['total_mes'][9]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][9])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][9]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][9])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->ventas[$fsc->year]['total_mes'][10]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][10])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][10]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][10])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->ventas[$fsc->year]['total_mes'][11]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][11])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][11]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][11])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->ventas[$fsc->year]['total_mes'][12]"}{$fsc->show_precio($fsc->ventas[$fsc->year]['total_mes'][12])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->ventas[$fsc->lastyear]['total_mes'][12]"}{$fsc->show_precio($fsc->ventas[$fsc->lastyear]['total_mes'][12])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                        </tr>
+                        <tr class="gastos">
+                           <td class="icon"></td>
+                           <td class="title"><strong>GASTOS</strong></td>
+                           <td class="porc">
+                              {if="$fsc->gastos[$fsc->year]['total_mes']['media']"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes']['media'])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes']['media']"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes']['media'])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="total">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][0]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][0])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][0]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][0])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][1]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][1])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][1]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][1])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][2]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][2])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][2]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][2])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][3]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][3])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][3]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][3])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][4]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][4])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][4]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][4])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][5]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][5])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][5]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][5])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][6]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][6])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][6]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][6])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][7]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][7])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][7]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][7])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][8]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][8])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][8]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][8])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][9]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][9])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][9]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][9])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][10]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][10])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][10]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][10])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][11]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][11])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][11]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][11])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->gastos[$fsc->year]['total_mes'][12]"}{$fsc->show_precio($fsc->gastos[$fsc->year]['total_mes'][12])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->gastos[$fsc->lastyear]['total_mes'][12]"}{$fsc->show_precio($fsc->gastos[$fsc->lastyear]['total_mes'][12])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="icon"></td>
+                           <td class="title"><strong>RESULTADO</strong></td>
+                           <td class="porc">
+                              {if="$fsc->resultado[$fsc->year]['total_mes']['media']"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes']['media'])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes']['media']"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes']['media'])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="total">
+                              {if="$fsc->resultado[$fsc->year]['total_mes'][0]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][0])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][0]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][0])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->resultado[$fsc->year]['total_mes'][1]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][1])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][1]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][1])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->resultado[$fsc->year]['total_mes'][2]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][2])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][2]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][2])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->resultado[$fsc->year]['total_mes'][3]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][3])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][3]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][3])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->resultado[$fsc->year]['total_mes'][4]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][4])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][4]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][4])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->resultado[$fsc->year]['total_mes'][5]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][5])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][5]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][5])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->resultado[$fsc->year]['total_mes'][6]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][6])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][6]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][6])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->resultado[$fsc->year]['total_mes'][7]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][7])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][7]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][7])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->resultado[$fsc->year]['total_mes'][8]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][8])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][8]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][8])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->resultado[$fsc->year]['total_mes'][9]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][9])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][9]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][9])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->resultado[$fsc->year]['total_mes'][10]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][10])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][10]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][10])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->resultado[$fsc->year]['total_mes'][11]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][11])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][11]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][11])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                           <td class="month">
+                              {if="$fsc->resultado[$fsc->year]['total_mes'][12]"}{$fsc->show_precio($fsc->resultado[$fsc->year]['total_mes'][12])}{else}{$fsc->number}{/if}
+                              <br /><small>{if="$fsc->resultado[$fsc->lastyear]['total_mes'][12]"}{$fsc->show_precio($fsc->resultado[$fsc->lastyear]['total_mes'][12])}{else}{$fsc->number}{/if}</small>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-lg-8">
+                  <div class="box">
+                     <div class="box-header with-border">
+                        <h3 class="box-title">Resultado Anual</h3>
+                        <div class="box-tools pull-right">
+                           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                     </div>
+                     <div class="box-body">
+                        <canvas id="resultado-canvas"></canvas>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-lg-4">
+                  <div class="box">
+                     <div class="box-header with-border">
+                        <h3 class="box-title">Distribución de Ventas</h3>
+                        <div class="box-tools pull-right">
+                           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                     </div>
+                     <div class="box-body">
+                        <canvas id="distribucion-canvas"></canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 </form>
-</div>
-<!-- /.box-footer -->
-</div>
+
 <script src="plugins/dashboard_avanzado/extras/Chart.bundle.min.js"></script>
 <script src="plugins/dashboard_avanzado/extras/charts.js"></script>
+<script>
+   var dataVentas = [{loop="$fsc->charts['totales']['ventas']"}{$value1},{/loop}];
+   var dataGastos = [{loop="$fsc->charts['totales']['gastos']"}{$value1},{/loop}];
+   var dataResultado = [{loop="$fsc->charts['totales']['resultado']"}{$value1},{/loop}];
+   var distribucionLabels = {$fsc->charts['distribucion']['labels']};
+   var distribucionPorc = {$fsc->charts['distribucion']['porc']};
+   var distribucionColor = {$fsc->charts['distribucion']['colors']};
+</script>
 
 {include="footer"}

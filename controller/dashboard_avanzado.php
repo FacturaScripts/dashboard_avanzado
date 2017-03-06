@@ -86,6 +86,12 @@ class dashboard_avanzado extends fs_controller
             $this->charts['totales']['gastos'][$mes] = ($this->gastos[$this->year]['total_mes'][$mes]) ? $this->gastos[$this->year]['total_mes'][$mes] : 0;
             $this->charts['totales']['resultado'][$mes] = ($this->resultado[$this->year]['total_mes'][$mes]) ? $this->resultado[$this->year]['total_mes'][$mes] : 0;
          }
+         else
+         {
+            $this->charts['totales']['ventas'][$mes] = 0;
+            $this->charts['totales']['gastos'][$mes] = 0;
+            $this->charts['totales']['resultado'][$mes] = 0;
+         }
       }
 
       $i = 1;
@@ -156,6 +162,10 @@ class dashboard_avanzado extends fs_controller
       // Recorremos los meses y ejecutamos una consulta filtrando por el mes
       for($mes = 1; $mes <= 12; $mes++)
       {
+         /// inicializamos
+         $ventas['total_mes'][$mes] = 0;
+         $gastos['total_mes'][$mes] = 0;
+         
          $dia_mes = cal_days_in_month(CAL_GREGORIAN, $mes, $year);
 
          $date['desde'] = date('1-' . $mes . '-' . $year);
@@ -185,9 +195,33 @@ class dashboard_avanzado extends fs_controller
             $familia = $data['familia'];
 
             // Arrays con los datos a mostrar
-            $ventas['total_fam_mes'][$codfamilia][$mes] = $pvptotal + $ventas['total_fam_mes'][$codfamilia][$mes];
-            $ventas['total_fam'][$codfamilia] = $pvptotal + $ventas['total_fam'][$codfamilia];
-            $ventas['total_ref'][$codfamilia][$referencia] = $pvptotal + $ventas['total_ref'][$codfamilia][$referencia];
+            if( isset($ventas['total_fam_mes'][$codfamilia][$mes]) )
+            {
+               $ventas['total_fam_mes'][$codfamilia][$mes] += $pvptotal;
+            }
+            else
+            {
+               $ventas['total_fam_mes'][$codfamilia][$mes] = $pvptotal;
+            }
+            
+            if( isset($ventas['total_fam'][$codfamilia]) )
+            {
+               $ventas['total_fam'][$codfamilia] += $pvptotal;
+            }
+            else
+            {
+               $ventas['total_fam'][$codfamilia] = $pvptotal;
+            }
+            
+            if( isset($ventas['total_ref'][$codfamilia][$referencia]) )
+            {
+               $ventas['total_ref'][$codfamilia][$referencia] += $pvptotal;
+            }
+            else
+            {
+               $ventas['total_ref'][$codfamilia][$referencia] = $pvptotal;
+            }
+            
             $ventas['total_mes'][$mes] = $pvptotal + $ventas['total_mes'][$mes];
             $ventas_total_meses = $pvptotal + $ventas_total_meses;
 
@@ -275,6 +309,10 @@ class dashboard_avanzado extends fs_controller
          if( isset($ventas['total_mes'][$mes]) )
          {
             $resultado['total_mes'][$mes] = bround($ventas['total_mes'][$mes] - $gastos['total_mes'][$mes], FS_NF0_ART);
+         }
+         else
+         {
+            $resultado['total_mes'][$mes] = 0;
          }
       }
 
