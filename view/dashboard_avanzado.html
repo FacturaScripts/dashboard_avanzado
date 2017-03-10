@@ -80,6 +80,19 @@
    <div class="container-fluid">
       <div class="row">
          <div class="col-sm-12">
+            <ul class="nav nav-pills">
+               <li role="presentation" class="active">
+                  <a href="#">Resumen {$fsc->year}</a>
+               </li>
+               <li role="presentation">
+                  <a href="index.php?page=dashboard_avanzado_tesoreria&year={$fsc->year}">Tesorería {$fsc->year}</a>
+               </li>
+            </ul>
+            <br/>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-sm-12">
             <div class="form-group">
                <div class="box">
                   <div class="box-header with-border">
@@ -102,8 +115,6 @@
                            </a>
                         </span>
                      </div>
-                     <h1 class="">Resumen {$fsc->year}</h1>
-                     <div class="box-tools pull-right"></div>
                   </div>
                   <div class="box-body">
                      <div class="table-responsive">
@@ -722,8 +733,6 @@
    </div>
 </form>
 
-<script src="plugins/dashboard_avanzado/extras/Chart.bundle.min.js"></script>
-<script src="plugins/dashboard_avanzado/extras/charts.js"></script>
 <script>
    var dataVentas = [{loop="$fsc->charts['totales']['ventas']"}{$value1},{/loop}];
    var dataGastos = [{loop="$fsc->charts['totales']['gastos']"}{$value1},{/loop}];
@@ -732,5 +741,7 @@
    var distribucionPorc = {$fsc->charts['distribucion']['porc']};
    var distribucionColor = {$fsc->charts['distribucion']['colors']};
 </script>
+<script src="plugins/dashboard_avanzado/extras/Chart.bundle.min.js"></script>
+<script src="plugins/dashboard_avanzado/extras/charts.js"></script>
 
 {include="footer"}

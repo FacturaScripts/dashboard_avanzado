@@ -181,52 +181,53 @@ class dashboard_avanzado extends fs_controller
                  . " where fc.fecha >= " . $this->empresa->var2str($date['desde'])
                  . " AND fc.fecha <= " . $this->empresa->var2str($date['hasta'])
                  . " group by lfc.referencia";
-
-         $lineas = $this->db->select($sql);
-
-
+         
          // VENTAS: Recorremos lineasfacturascli y montamos arrays
-         foreach($lineas as $dl)
+         $lineas = $this->db->select($sql);
+         if($lineas)
          {
-            $data = $this->build_data($dl);
-            $pvptotal = $data['pvptotal'];
-            $referencia = $data['ref'];
-            $codfamilia = $data['codfamilia'];
-            $familia = $data['familia'];
-
-            // Arrays con los datos a mostrar
-            if( isset($ventas['total_fam_mes'][$codfamilia][$mes]) )
+            foreach($lineas as $dl)
             {
-               $ventas['total_fam_mes'][$codfamilia][$mes] += $pvptotal;
+               $data = $this->build_data($dl);
+               $pvptotal = $data['pvptotal'];
+               $referencia = $data['ref'];
+               $codfamilia = $data['codfamilia'];
+               $familia = $data['familia'];
+               
+               // Arrays con los datos a mostrar
+               if( isset($ventas['total_fam_mes'][$codfamilia][$mes]) )
+               {
+                  $ventas['total_fam_mes'][$codfamilia][$mes] += $pvptotal;
+               }
+               else
+               {
+                  $ventas['total_fam_mes'][$codfamilia][$mes] = $pvptotal;
+               }
+               
+               if( isset($ventas['total_fam'][$codfamilia]) )
+               {
+                  $ventas['total_fam'][$codfamilia] += $pvptotal;
+               }
+               else
+               {
+                  $ventas['total_fam'][$codfamilia] = $pvptotal;
+               }
+               
+               if( isset($ventas['total_ref'][$codfamilia][$referencia]) )
+               {
+                  $ventas['total_ref'][$codfamilia][$referencia] += $pvptotal;
+               }
+               else
+               {
+                  $ventas['total_ref'][$codfamilia][$referencia] = $pvptotal;
+               }
+               
+               $ventas['total_mes'][$mes] = $pvptotal + $ventas['total_mes'][$mes];
+               $ventas_total_meses = $pvptotal + $ventas_total_meses;
+               
+               // Array temporal con los totales (falta añadir descripción familia)
+               $ventas['familias'][$codfamilia][$referencia][$mes] = array('pvptotal' => $pvptotal);
             }
-            else
-            {
-               $ventas['total_fam_mes'][$codfamilia][$mes] = $pvptotal;
-            }
-            
-            if( isset($ventas['total_fam'][$codfamilia]) )
-            {
-               $ventas['total_fam'][$codfamilia] += $pvptotal;
-            }
-            else
-            {
-               $ventas['total_fam'][$codfamilia] = $pvptotal;
-            }
-            
-            if( isset($ventas['total_ref'][$codfamilia][$referencia]) )
-            {
-               $ventas['total_ref'][$codfamilia][$referencia] += $pvptotal;
-            }
-            else
-            {
-               $ventas['total_ref'][$codfamilia][$referencia] = $pvptotal;
-            }
-            
-            $ventas['total_mes'][$mes] = $pvptotal + $ventas['total_mes'][$mes];
-            $ventas_total_meses = $pvptotal + $ventas_total_meses;
-
-            // Array temporal con los totales (falta añadir descripción familia)
-            $ventas['familias'][$codfamilia][$referencia][$mes] = array('pvptotal' => $pvptotal);
          }
 
          // Las descripciones solo las necesitamos en el año seleccionado,
@@ -258,9 +259,14 @@ class dashboard_avanzado extends fs_controller
                     . " LEFT JOIN co_asientos as asi ON par.idasiento = asi.idasiento"
                     . " where asi.fecha >= " . $this->empresa->var2str($date['desde'])
                     . " AND asi.fecha <= " . $this->empresa->var2str($date['hasta'])
-                    . " AND codsubcuenta LIKE '6%'"
-                    . " AND asi.numero <> " . $this->empresa->var2str($asiento_regularizacion)
-                    . " ORDER BY codsubcuenta";
+                    . " AND codsubcuenta LIKE '6%'";
+            
+            if($asiento_regularizacion)
+            {
+               $sql .= " AND asi.numero <> " . $this->empresa->var2str($asiento_regularizacion);
+            }
+            
+            $sql .= " ORDER BY codsubcuenta";
             
             $partidas = $this->db->select($sql);
             if($partidas)
@@ -272,13 +278,52 @@ class dashboard_avanzado extends fs_controller
                   $pvptotal = $p['debe'] - $p['haber'];
                   
                   // Array con los datos a mostrar
-                  $gastos['total_cuenta_mes'][$codcuenta][$mes] = $pvptotal + $gastos['total_cuenta_mes'][$codcuenta][$mes];
-                  $gastos['total_cuenta'][$codcuenta] = $pvptotal + $gastos['total_cuenta'][$codcuenta];
-                  $gastos['total_subcuenta'][$codcuenta][$codsubcuenta] = $pvptotal + $gastos['total_subcuenta'][$codcuenta][$codsubcuenta];
-                  $gastos['total_mes'][$mes] = $pvptotal + $gastos['total_mes'][$mes];
+                  if( isset($gastos['total_cuenta_mes'][$codcuenta][$mes]) )
+                  {
+                     $gastos['total_cuenta_mes'][$codcuenta][$mes] += $pvptotal;
+                  }
+                  else
+                  {
+                     $gastos['total_cuenta_mes'][$codcuenta][$mes] = $pvptotal;
+                  }
+                  
+                  if( isset($gastos['total_cuenta'][$codcuenta]) )
+                  {
+                     $gastos['total_cuenta'][$codcuenta] += $pvptotal;
+                  }
+                  else
+                  {
+                     $gastos['total_cuenta'][$codcuenta] = $pvptotal;
+                  }
+                  
+                  if( isset($gastos['total_subcuenta'][$codcuenta][$codsubcuenta]) )
+                  {
+                     $gastos['total_subcuenta'][$codcuenta][$codsubcuenta] += $pvptotal;
+                  }
+                  else
+                  {
+                     $gastos['total_subcuenta'][$codcuenta][$codsubcuenta] = $pvptotal;
+                  }
+                  
+                  if( isset($gastos['total_mes'][$mes]) )
+                  {
+                     $gastos['total_mes'][$mes] += $pvptotal;
+                  }
+                  else
+                  {
+                     $gastos['total_mes'][$mes] = $pvptotal;
+                  }
+                  
                   $gastos_total_meses = $pvptotal + $gastos_total_meses;
                   
-                  $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes] = array('pvptotal' => $pvptotal + $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes]['pvptotal']);
+                  if( isset($gastos['cuentas'][$codcuenta][$codsubcuenta][$mes]) )
+                  {
+                     $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes] = array('pvptotal' => $pvptotal + $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes]['pvptotal']);
+                  }
+                  else
+                  {
+                     $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes] = array('pvptotal' => $pvptotal);
+                  }
                }
             }
          }
@@ -369,30 +414,36 @@ class dashboard_avanzado extends fs_controller
    {
       $pvptotal = bround($dl['pvptotal'], FS_NF0_ART);
       $referencia = $dl['referencia'];
-
-      if(!empty($referencia))
+      
+      $articulo = FALSE;
+      if($referencia)
       {
          $art = new articulo();
          $articulo = $art->get($referencia);
-         $art_desc = $articulo->descripcion;
-         $codfamilia = $articulo->codfamilia;
-         if(empty($codfamilia))
+         if($articulo)
          {
-            $codfamilia = 'SIN_FAMILIA';
-            $familia = 'Sin Familia';
-         }
-         else
-         {
-            $familia = $articulo->get_familia()->descripcion;
+            $art_desc = $articulo->descripcion;
+            $codfamilia = $articulo->codfamilia;
+            if(empty($codfamilia))
+            {
+               $codfamilia = 'SIN_FAMILIA';
+               $familia = 'Sin Familia';
+            }
+            else
+            {
+               $familia = $articulo->get_familia()->descripcion;
+            }
          }
       }
-      else
+      
+      if(!$articulo)
       {
          $referencia = 'SIN_REFERENCIA';
          $art_desc = 'Artículo sin referencia';
          $codfamilia = 'SIN_FAMILIA';
          $familia = 'SIN_FAMILIA';
       }
+      
       return array('ref' => $referencia, 'art_desc' => $art_desc, 'codfamilia' => $codfamilia, 'familia' => $familia, 'pvptotal' => $pvptotal);
    }
 

@@ -1,0 +1,176 @@
+{include="header"}
+
+<style>
+   .content-wrapper, .right-side {
+      background-color: #ecf0f5 !important;
+   }
+</style>
+
+<form class="form" name="f_dashboard_avanzado" action="{$fsc->url()}" method="post">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-sm-12">
+            <ul class="nav nav-pills">
+               <li role="presentation">
+                  <a href="index.php?page=dashboard_avanzado&year={$fsc->year}">Resumen {$fsc->year}</a>
+               </li>
+               <li role="presentation" class="active">
+                  <a href="#">Tesorería {$fsc->year}</a>
+               </li>
+            </ul>
+            <br/>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-sm-6">
+            <div class="box">
+               <div class="box-header with-border">
+                  <div class="pull-left">
+                     <span class="btn-group">
+                        <a class="btn btn-xs btn-default" href="{$fsc->url()}" title="Recargar la página">
+                           <span class="glyphicon glyphicon-refresh"></span>
+                        </a>
+                        {if="$fsc->page->is_default()"}
+                        <a class="btn btn-xs btn-default active" href="{$fsc->url()}&amp;default_page=FALSE" title="desmarcar como página de inicio">
+                           <span class="glyphicon glyphicon-home"></span>
+                        </a>
+                        {else}
+                        <a class="btn btn-xs btn-default" href="{$fsc->url()}&amp;default_page=TRUE" title="marcar como página de inicio">
+                           <span class="glyphicon glyphicon-home"></span>
+                        </a>
+                        {/if}
+                        <a class="btn btn-xs btn-default" href="index.php?page=dashboard_avanzado_config" title="opciones de dashboard avanzado">
+                           <span class="glyphicon glyphicon-wrench"></span>
+                        </a>
+                     </span>
+                  </div>
+               </div>
+               <div class="box-body">
+                  <div class="table-responsive">
+                     <table class="table table-striped">
+                        <thead>
+                           <tr>
+                              <th colspan="3" class="text-center">Tesorería</th>
+                           </tr>
+                        </thead>
+                        <tr>
+                           <td rowspan="4" class="text-center">CAJAS</td>
+                           <td>Caja 1</td>
+                           <td class="text-right">{$fsc->show_precio(0)}</td>
+                        </tr>
+                        <tr>
+                           <td>Caja 2</td>
+                           <td class="text-right">{$fsc->show_precio(0)}</td>
+                        </tr>
+                        <tr>
+                           <td>Caja 3</td>
+                           <td class="text-right">{$fsc->show_precio(0)}</td>
+                        </tr>
+                        <tr>
+                           <td>Total cajas</td>
+                           <td class="text-right">{$fsc->show_precio(0)}</td>
+                        </tr>
+                        <tr>
+                           <td rowspan="4" class="text-center">Bancos</td>
+                           <td>Banco 1</td>
+                           <td class="text-right">{$fsc->show_precio(0)}</td>
+                        </tr>
+                        <tr>
+                           <td>Banco 2</td>
+                           <td class="text-right">{$fsc->show_precio(0)}</td>
+                        </tr>
+                        <tr>
+                           <td>Banco 3</td>
+                           <td class="text-right">{$fsc->show_precio(0)}</td>
+                        </tr>
+                        <tr>
+                           <td>Total bancos</td>
+                           <td class="text-right">{$fsc->show_precio(0)}</td>
+                        </tr>
+                        <tr>
+                           <td colspan="2" class="text-right">TOTAL TESORERÍA</td>
+                           <td class="text-right">{$fsc->show_precio(0)}</td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-6">
+            <div class="box">
+               <div class="box-body">
+                  <div class="table-responsive">
+                     <table class="table table-striped">
+                        <thead>
+                           <tr>
+                              <th colspan="2" class="text-center">GASTOS Y COBROS PENDIENTES</th>
+                           </tr>
+                        </thead>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-sm-6">
+            <div class="box">
+               <div class="box-body">
+                  <div class="table-responsive">
+                     <table class="table table-striped">
+                        <thead>
+                           <tr>
+                              <th colspan="2" class="text-center">IMPUESTOS</th>
+                           </tr>
+                        </thead>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-6">
+            <div class="box">
+               <div class="box-body">
+                  <div class="table-responsive">
+                     <table class="table table-striped">
+                        <thead>
+                           <tr>
+                              <th colspan="2" class="text-center">RESULTADOS SITUACIÓN TESORERÍA A CORTO PLAZO</th>
+                           </tr>
+                        </thead>
+                     </table>
+                  </div>
+               </div>
+            </div>
+            <div class="box">
+               <div class="box-body">
+                  <div class="table-responsive">
+                     <table class="table table-striped">
+                        <thead>
+                           <tr>
+                              <th colspan="2" class="text-center">RESERVAS + RESULTADOS EJERCICIOS</th>
+                           </tr>
+                        </thead>
+                     </table>
+                  </div>
+               </div>
+            </div>
+            <div class="box">
+               <div class="box-body">
+                  <div class="table-responsive">
+                     <table class="table table-striped">
+                        <thead>
+                           <tr>
+                              <th colspan="2" class="text-center">RESULTADOS EJERCICIO ACTUAL</th>
+                           </tr>
+                        </thead>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</form>
+
+{include="footer"}
