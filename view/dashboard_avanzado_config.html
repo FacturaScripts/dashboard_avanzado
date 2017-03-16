@@ -51,7 +51,7 @@
                             <span class="glyphicon glyphicon-home"></span>
                         </a>
                         {else}
-                        <a class="btn btn-xs btn-default" href="{$fsc->url()}&amp;default_page=TRUE" title="marcar como página de inicio">
+                        <a class="btn btn-xs btn-default" href="index.php?page=dashboard_avanzado&amp;default_page=TRUE" title="marcar como página de inicio">
                             <span class="glyphicon glyphicon-home"></span>
                         </a>
                         {/if}
@@ -67,9 +67,18 @@
         <div class="col-md-1">
             <h3>Ejercicio</h3>
         </div>
-        <div class="col-md-11">
+        <div class="col-md-3">
             <h3>Asiento de regularización</h3>
         </div>
+        <div class="col-md-4">
+            <h3>Cuentas IRPF de Alquiler (separadas por comas)</h3>
+        </div>        
+        <div class="col-md-4">
+            <h3>% Impuesto Sociedades</h3>
+        </div>         
+        
+        
+        
     </div>
     <form class="" method="post">
         {loop="$fsc->ejercicios"}
@@ -77,7 +86,7 @@
             <div class="col-md-1">
                 <div class="title-ejercicio"><b>{$value1->codejercicio}</b></div>
             </div>
-            <div class="col-md-11">
+            <div class="col-md-3">
 
                 <div class=" form-group">
                     <div class="input-group" style="width:100%;"> 
@@ -89,9 +98,61 @@
                                             </span>
                         </div>
                     </div>
-                </div>
             </div>
+                
+            <div class="col-md-3">
+
+                <div class=" form-group">
+                    <div class="input-group" style="width:100%;"> 
+                        <input class="form-control text-right" name="config[{$value1->codejercicio}][irpfalquiler]" value="{$fsc->config[$value1->codejercicio][irpfalquiler]}"
+                               placeholder="Cuentas IRPF" 
+                               aria-describedby="Cuentas IRPF separadas por comas">
+
+
+                    </div>
+                 </div>
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class=" form-group">
+                    <div class="input-group" style="width:100%;"> 
+                        <input class="form-control text-right" name="config[{$value1->codejercicio}][sociedades]" value="{$fsc->config[$value1->codejercicio][sociedades]}"
+                               placeholder="% Impuesto Sociedades" 
+                               aria-describedby="% Impuesto Sociedades">
+
+                    </div>
+                 </div>
+            </div>
+
+                
+       </div>
             {/loop}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class="btn-group pull-right">
                 <button class="btn btn-primary" type="submit" onclick="this.disabled = true;this.form.submit();" title="Guardar">
                     Guardar &nbsp;&nbsp;
