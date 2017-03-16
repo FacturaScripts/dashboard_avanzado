@@ -22,7 +22,7 @@
 require_model('ejercicio.php');
 require_model('partida.php');
 require_model('asiento.php');
-//require_model('gestion_documento_config.php');
+
 
 /**
  * Configuración de las opciones de Gestión Documental
@@ -35,6 +35,7 @@ class dashboard_avanzado_config extends fs_controller
     public $ejercicios;
     public $config;
 
+
     public function __construct()
     {
         parent::__construct(__CLASS__, '', '', FALSE, TRUE, FALSE);
@@ -44,7 +45,7 @@ class dashboard_avanzado_config extends fs_controller
     {
         $ejer             = new ejercicio();
         $this->ejercicios = $ejer->all();
-        
+
         $fsvar = new fs_var();
 
         if (isset($_POST['save']))
@@ -54,19 +55,25 @@ class dashboard_avanzado_config extends fs_controller
             foreach ($config as $codejercicio => $asiento)
             {
                 $num_regularizacion      = $asiento['regularizacion']['numero'];
-                $concepto_regularizacion = $this->get_asiento($codejercicio, $num_regularizacion)[0]['concepto'];
-
+//                $concepto_regularizacion = $this->get_asiento($codejercicio, $num_regularizacion)[0]['concepto'];
+                $asiento=$this->get_asiento($codejercicio, $num_regularizacion);
+                $concepto_regularizacion = $asiento[0]['concepto'];
                 $config[$codejercicio]['regularizacion']['numero']   = $num_regularizacion;
                 $config[$codejercicio]['regularizacion']['concepto'] = ($concepto_regularizacion) ? $concepto_regularizacion : 'ERROR: El número de asiento es incorrecto';
                 $config[$codejercicio]['regularizacion']['error'] = ($concepto_regularizacion) ? 0 : 1;
+                              
             }
             
             $json = json_encode($config);
             $fsvar->simple_save('dashboard_avanzado_config', $json);
             $this->config = $config;
         } else {
+        	
+        	   
             $this->config = json_decode($fsvar->simple_get('dashboard_avanzado_config'), true);
+            
         }
+
     }
 
     protected function get_asiento($codejercicio, $numero)
