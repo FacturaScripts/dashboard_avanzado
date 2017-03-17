@@ -38,6 +38,11 @@ class dashboard_avanzado extends fs_controller
    public $ventas;
    public $year;
    
+   private $articulo;
+   private $cuenta;
+   private $familia;
+   private $subcuenta;
+   
    public function __construct()
    {
       parent::__construct(__CLASS__, 'Dashboard Avanzado', 'admin');
@@ -45,10 +50,14 @@ class dashboard_avanzado extends fs_controller
 
    protected function private_core()
    {
+      $this->articulo = new articulo();
+      $this->cuenta = new cuenta();
+      $this->familia = new familia();
       $this->gastos = '';
       $this->number = '<span style="color:#ccc;">0,00 €</span>';
       $this->porc = '<span style="color:#ccc;">0 %</span>';
       $this->resultado = '';
+      $this->subcuenta = new subcuenta();
       $this->ventas = '';
       
       $ejer = new ejercicio();
@@ -56,7 +65,7 @@ class dashboard_avanzado extends fs_controller
       
       $fsvar = new fs_var();
       $this->config = json_decode($fsvar->simple_get('dashboard_avanzado_config'), true);
-
+      
       // Obtenemos el año a filtrar, sino es el actual
       if(isset($_POST['year']) && $_POST['year'] != '')
       {
@@ -80,18 +89,9 @@ class dashboard_avanzado extends fs_controller
        */
       for($mes = 1; $mes <= 12; $mes++)
       {
-         if( isset($this->charts['totales']['ventas'][$mes]) )
-         {
-            $this->charts['totales']['ventas'][$mes] = ($this->ventas[$this->year]['total_mes'][$mes]) ? $this->ventas[$this->year]['total_mes'][$mes] : 0;
-            $this->charts['totales']['gastos'][$mes] = ($this->gastos[$this->year]['total_mes'][$mes]) ? $this->gastos[$this->year]['total_mes'][$mes] : 0;
-            $this->charts['totales']['resultado'][$mes] = ($this->resultado[$this->year]['total_mes'][$mes]) ? $this->resultado[$this->year]['total_mes'][$mes] : 0;
-         }
-         else
-         {
-            $this->charts['totales']['ventas'][$mes] = 0;
-            $this->charts['totales']['gastos'][$mes] = 0;
-            $this->charts['totales']['resultado'][$mes] = 0;
-         }
+         $this->charts['totales']['ventas'][$mes] = $this->ventas[$this->year]['total_mes'][$mes];
+         $this->charts['totales']['gastos'][$mes] = $this->gastos[$this->year]['total_mes'][$mes];
+         $this->charts['totales']['resultado'][$mes] = $this->resultado[$this->year]['total_mes'][$mes];
       }
 
       $i = 1;
@@ -100,24 +100,24 @@ class dashboard_avanzado extends fs_controller
       foreach($this->ventas[$this->year]['porc_fam'] as $codfamilia => $porc)
       {
          $sep = ($count == $i) ? '' : ',';
-
-         if($codfamilia == 'SIN_FAMILIA')
+         
+         $fam_desc = 'Sin Familia';
+         if($codfamilia != 'SIN_FAMILIA')
          {
-            $fam_desc = 'Sin Familia';
+            $familia = $this->familia->get($codfamilia);
+            if($familia)
+            {
+               $fam_desc = $familia->descripcion;
+            }
          }
-         else
-         {
-            $fam = new familia();
-            $familia = $fam->get($codfamilia);
-            $fam_desc = $familia->descripcion;
-         }
-
+         
          $labels .= '"' . $fam_desc . '"' . $sep;
          $porcentajes .= $porc . $sep;
          $colores .= '"#' . $this->randomColor() . '"' . $sep;
 
          ++$i;
       }
+      
       $this->charts['distribucion']['labels'] = '['.$labels.']';
       $this->charts['distribucion']['porc'] = '['.$porcentajes.']';
       $this->charts['distribucion']['colors'] = '['.$colores.']';
@@ -335,15 +335,22 @@ class dashboard_avanzado extends fs_controller
             // GASTOS: Creamos un array con las descripciones de las cuentas y subcuentas
             foreach($gastos['cuentas'] as $codcuenta => $arraycuenta)
             {
-               $c = new cuenta();
-               $cuenta = $c->get_by_codigo($codcuenta, $year);
-
-               foreach($arraycuenta as $codsubcuenta => $arraysubcuenta)
+               $gastos['descripciones'][$codcuenta] = '-';
+               $gastos['descripciones'][$codsubcuenta] = '-';
+               
+               $cuenta = $this->cuenta->get_by_codigo($codcuenta, $year);
+               if($cuenta)
                {
-                  $s = new subcuenta();
-                  $subcuenta = $s->get_by_codigo($codsubcuenta, $year);
                   $gastos['descripciones'][$codcuenta] = $cuenta->descripcion;
-                  $gastos['descripciones'][$codsubcuenta] = $subcuenta->descripcion;
+                  
+                  foreach($arraycuenta as $codsubcuenta => $arraysubcuenta)
+                  {
+                     $subcuenta = $this->subcuenta->get_by_codigo($codsubcuenta, $year);
+                     if($subcuenta)
+                     {
+                        $gastos['descripciones'][$codsubcuenta] = $subcuenta->descripcion;
+                     }
+                  }
                }
             }
          }
@@ -418,8 +425,7 @@ class dashboard_avanzado extends fs_controller
       $articulo = FALSE;
       if($referencia)
       {
-         $art = new articulo();
-         $articulo = $art->get($referencia);
+         $articulo = $this->articulo->get($referencia);
          if($articulo)
          {
             $art_desc = $articulo->descripcion;

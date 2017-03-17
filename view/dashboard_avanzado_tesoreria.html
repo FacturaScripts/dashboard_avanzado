@@ -53,45 +53,49 @@
                      <table class="table table-striped">
                         <thead>
                            <tr>
-                              <th colspan="3" class="text-center">Tesorería</th>
+                              <th colspan="2" class="text-center">Tesorería</th>
                            </tr>
                         </thead>
+                        {if="$fsc->cajas"}
                         <tr>
-                           <td rowspan="4" class="text-center">CAJAS</td>
-                           <td>Caja 1</td>
-                           <td class="text-right">{$fsc->show_precio($fsc->da_tesoreria['caja1'])}</td>
+                           <td class="text-center">CAJAS</td>
+                           <td>
+                              <table class="table table-striped" style="margin: 0px;">
+                                 {loop="$fsc->cajas"}
+                                 <tr>
+                                    <td>{$value->descripcion}</td>
+                                    <td class="text-right">{$fsc->show_precio($value->saldo)}</td>
+                                 </tr>
+                                 {/loop}
+                                 <tr>
+                                    <td>TOTAL CAJAS</td>
+                                    <td class="text-right">{$fsc->show_precio($fsc->da_tesoreria['total_cajas'])}</td>
+                                 </tr>
+                              </table>
+                           </td>
                         </tr>
+                        {/if}
+                        {if="$fsc->bancos"}
                         <tr>
-                           <td>Caja 2</td>
-                           <td class="text-right">{$fsc->show_precio($fsc->da_tesoreria['caja2'])}</td>
+                           <td class="text-center">BANCOS</td>
+                           <td>
+                              <table class="table table-striped" style="margin: 0px;">
+                                 {loop="$fsc->bancos"}
+                                 <tr>
+                                    <td>{$value->descripcion}</td>
+                                    <td class="text-right">{$fsc->show_precio($value->saldo)}</td>
+                                 </tr>
+                                 {/loop}
+                                 <tr>
+                                    <td>TOTAL BANCOS</td>
+                                    <td class="text-right">{$fsc->show_precio($fsc->da_tesoreria['total_bancos'])}</td>
+                                 </tr>
+                              </table>
+                           </td>
                         </tr>
+                        {/if}
                         <tr>
-                           <td>Caja 3</td>
-                           <td class="text-right">{$fsc->show_precio($fsc->da_tesoreria['caja3'])}</td>
-                        </tr>
-                        <tr>
-                           <td>Total cajas</td>
-                           <td class="text-right">{$fsc->show_precio($fsc->da_tesoreria['total_cajas'])}</td>
-                        </tr>
-                        <tr>
-                           <td rowspan="4" class="text-center">Bancos</td>
-                           <td>Banco 1</td>
-                           <td class="text-right">{$fsc->show_precio($fsc->da_tesoreria['banco1'])}</td>
-                        </tr>
-                        <tr>
-                           <td>Banco 2</td>
-                           <td class="text-right">{$fsc->show_precio($fsc->da_tesoreria['banco2'])}</td>
-                        </tr>
-                        <tr>
-                           <td>Banco 3</td>
-                           <td class="text-right">{$fsc->show_precio($fsc->da_tesoreria['banco3'])}</td>
-                        </tr>
-                        <tr>
-                           <td>Total bancos</td>
-                           <td class="text-right">{$fsc->show_precio($fsc->da_tesoreria['total_bancos'])}</td>
-                        </tr>
-                        <tr>
-                           <td colspan="2" class="text-right">TOTAL TESORERÍA</td>
+                           <td class="text-center">TOTAL TESORERÍA</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_tesoreria['total_tesoreria'])}</td>
                         </tr>
                      </table>
@@ -347,8 +351,8 @@
    </div>
 </form>
 
-
 <script type="text/javascript" >
-$('tr td:contains("-")').addClass('gastos');
+   $('tr td:contains("-")').addClass('gastos');
 </script>
+
 {include="footer"}
