@@ -24,7 +24,7 @@ require_model('subcuenta.php');
 /**
  * Description of dashboard_avanzado_tesoreria
  *
- * @author Carlos garcía Gómez
+ * @author Carlos García Gómez
  * @author juanguinho - Itaca Software Libre
  */
 class dashboard_avanzado_tesoreria extends fs_controller
@@ -42,10 +42,16 @@ class dashboard_avanzado_tesoreria extends fs_controller
 
    protected function private_core()
    {
+      /// seleccionamos el ejercicio actual
       $this->year = date('Y');
-      if( isset($_REQUEST['year']) )
+      $ejercicio = new ejercicio();
+      foreach($ejercicio->all() as $eje)
       {
-         $this->year = $_REQUEST['year'];
+         if( date('Y', strtotime($eje->fechafin)) == date('Y') )
+         {
+            $this->year = $eje->codejercicio;
+            break;
+         }
       }
 
       $fsvar = new fs_var();
@@ -56,7 +62,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
       
       // Definimos estructura para tesorería		
       $this->da_tesoreria = array(
-          'desde' => date('1-1-' . $this->year),
+          'desde' => date('01-01-' . $this->year),
           'hasta' => date('31-12-' . $this->year),
           'total_cajas' => 0,
           'total_bancos' => 0,
@@ -77,7 +83,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
 
       /// Definimos estructura para gastoscobros		
       $this->da_gastoscobros = array(
-          'desde' => date('1-1-' . $this->year),
+          'desde' => date('01-01-' . $this->year),
           'hasta' => date('31-12-' . $this->year),
           'gastospdtepago' => 0,
           'clientespdtecobro' => 0,

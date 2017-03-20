@@ -66,18 +66,38 @@ class dashboard_avanzado extends fs_controller
       $fsvar = new fs_var();
       $this->config = json_decode($fsvar->simple_get('dashboard_avanzado_config'), true);
       
-      // Obtenemos el año a filtrar, sino es el actual
-      if(isset($_POST['year']) && $_POST['year'] != '')
+      /// Obtenemos el año a filtrar, si no es el actual
+      if( isset($_POST['year']) )
       {
          $year = $_POST['year'];
       }
       else
       {
-         $year = date('Y');
+         foreach($this->ejercicios as $eje)
+         {
+            if( date('Y', strtotime($eje->fechafin)) == date('Y') )
+            {
+               $year = $eje->codejercicio;
+               break;
+            }
+         }
       }
-      $this->year = $year;
-      $this->lastyear = $year - 1;
-
+      
+      /// seleccionamos el año anterior
+      $this->year = FALSE;
+      foreach($this->ejercicios as $eje)
+      {
+         if($eje->codejercicio == $year)
+         {
+            $this->year = $eje->codejercicio;
+         }
+         else if($this->year)
+         {
+            $this->lastyear = $eje->codejercicio;
+            break;
+         }
+      }
+      
       /// Llamamos a la función que crea los arrays con los datos, pasandole este año y el anterior.
       $this->build_year($this->year);
       $this->build_year($this->lastyear);
@@ -319,11 +339,11 @@ class dashboard_avanzado extends fs_controller
                   
                   if( isset($gastos['cuentas'][$codcuenta][$codsubcuenta][$mes]) )
                   {
-                     $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes] = array('pvptotal' => $pvptotal + $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes]['pvptotal']);
+                     $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes]['pvptotal'] += $pvptotal;
                   }
                   else
                   {
-                     $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes] = array('pvptotal' => $pvptotal);
+                     $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes]['pvptotal'] = $pvptotal;
                   }
                }
             }
@@ -337,8 +357,6 @@ class dashboard_avanzado extends fs_controller
             foreach($gastos['cuentas'] as $codcuenta => $arraycuenta)
             {
                $gastos['descripciones'][$codcuenta] = '-';
-               $gastos['descripciones'][$codsubcuenta] = '-';
-               
                $cuenta = $this->cuenta->get_by_codigo($codcuenta, $year);
                if($cuenta)
                {
@@ -347,6 +365,7 @@ class dashboard_avanzado extends fs_controller
                
                foreach($arraycuenta as $codsubcuenta => $arraysubcuenta)
                {
+                  $gastos['descripciones'][$codsubcuenta] = '-';
                   $subcuenta = $this->subcuenta->get_by_codigo($codsubcuenta, $year);
                   if($subcuenta)
                   {
