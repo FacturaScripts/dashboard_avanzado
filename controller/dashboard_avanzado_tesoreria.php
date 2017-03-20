@@ -86,19 +86,19 @@ class dashboard_avanzado_tesoreria extends fs_controller
           'segsocialpdtecobro' => 0,
           'total_gastoscobros' => 0,
       );
-
-      $this->da_gastoscobros["gastospdtepago"] = -1 * $this->saldo_cuenta('40%', $this->da_gastoscobros["desde"], $this->da_gastoscobros["hasta"]);
-      $this->da_gastoscobros["gastospdtepago"] += -1 * $this->saldo_cuenta('41%', $this->da_gastoscobros["desde"], $this->da_gastoscobros["hasta"]);
-      $this->da_gastoscobros["clientespdtecobro"] = $this->saldo_cuenta('43%', $this->da_gastoscobros["desde"], $this->da_gastoscobros["hasta"]);
+      
+      $this->get_gastos_pendientes();
+      $this->get_cobros_pendientes();
+      
       $this->da_gastoscobros["nominaspdtepago"] = $this->saldo_cuenta('465%', $this->da_gastoscobros["desde"], $this->da_gastoscobros["hasta"]);
-      $this->da_gastoscobros["segsocialpdtepago"] = -1 * $this->saldo_cuenta('476%', $this->da_gastoscobros["desde"], $this->da_gastoscobros["hasta"]);
+      $this->da_gastoscobros["segsocialpdtepago"] = $this->saldo_cuenta('476%', $this->da_gastoscobros["desde"], $this->da_gastoscobros["hasta"]);
       $this->da_gastoscobros["segsocialpdtecobro"] = $this->saldo_cuenta('471%', $this->da_gastoscobros["desde"], $this->da_gastoscobros["hasta"]);
       $this->da_gastoscobros["total_gastoscobros"] = $this->da_gastoscobros["gastospdtepago"] + $this->da_gastoscobros["clientespdtecobro"] +
               $this->da_gastoscobros["nominaspdtepago"] + $this->da_gastoscobros["segsocialpdtepago"] + $this->da_gastoscobros["segsocialpdtecobro"];
       
       /// Definimos estructura para reservasresultados		
       $this->da_reservasresultados = array(
-          'desde' => date('1-1-' . $this->year),
+          'desde' => date('01-01-' . $this->year),
           'hasta' => date('31-12-' . $this->year),
           'reservalegal' => 0,
           'reservasvoluntarias' => 0,
@@ -114,7 +114,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
       
       /// Definimos estructura para resultado ejercicio actual		
       $this->da_resultadoejercicioactual = array(
-          'desde' => date('1-1-' . $this->year),
+          'desde' => date('01-01-' . $this->year),
           'hasta' => date('31-12-' . $this->year),
           'total_ventas' => 0,
           'total_gastos' => 0,
@@ -150,7 +150,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
 
       /// Definimos estructura para impuestos		
       $this->da_impuestos = array(
-          'desde' => date('1-1-' . $this->year),
+          'desde' => date('01-01-' . $this->year),
           'hasta' => date('31-12-' . $this->year),
           'irpf-mod111' => 0,
           'irpf-mod115' => 0,
@@ -179,48 +179,48 @@ class dashboard_avanzado_tesoreria extends fs_controller
          case '2':
          case '3':
          case '4':
-            $this->da_impuestos['desde'] = date('1-1-' . $this->year);
-            $this->da_impuestos['hasta'] = date('t-3-' . $this->year);
+            $this->da_impuestos['desde'] = date('01-01-' . $this->year);
+            $this->da_impuestos['hasta'] = date('t-03-' . $this->year);
             break;
 
          case '5':
          case '6':
          case '7':
-            $this->da_impuestos['desde'] = date('1-4-' . $this->year);
-            $this->da_impuestos['hasta'] = date('t-6-' . $this->year);
+            $this->da_impuestos['desde'] = date('01-04-' . $this->year);
+            $this->da_impuestos['hasta'] = date('t-06-' . $this->year);
             break;
 
          case '8':
          case '9':
          case '10':
-            $this->da_impuestos['desde'] = date('1-7-' . $this->year);
-            $this->da_impuestos['hasta'] = date('t-9-' . $this->year);
+            $this->da_impuestos['desde'] = date('01-07-' . $this->year);
+            $this->da_impuestos['hasta'] = date('t-09-' . $this->year);
             break;
 
          case '11':
          case '12':
-            $this->da_impuestos['desde'] = date('1-10-' . $this->year);
+            $this->da_impuestos['desde'] = date('01-10-' . $this->year);
             $this->da_impuestos['hasta'] = date('t-12-' . $this->year);
             break;
       }
       
-      $this->da_impuestos["irpf-mod111"] = -1 * $this->saldo_cuenta('4751%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
-
+      $this->da_impuestos["irpf-mod111"] = $this->saldo_cuenta('4751%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
+      
       // cogemos las cuentas del alquiler de la configuración para generar el mod-115
-      if(isset($this->config[$this->year]['irpfalquiler']))
+      if( isset($this->config[$this->year]['irpfalquiler']) )
       {
          $cuentasalquiler = explode(",", $this->config[$this->year]['irpfalquiler']);
-
          foreach($cuentasalquiler as $cuentaalquiler)
          {
             if(isset($cuentaalquiler))
             {
-               $this->da_impuestos["irpf-mod115"] += -1 * $this->saldo_cuenta($cuentaalquiler, $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
+               $this->da_impuestos["irpf-mod115"] += $this->saldo_cuenta($cuentaalquiler, $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
+               $this->da_impuestos["irpf-mod111"] -= $this->saldo_cuenta($cuentaalquiler, $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
             }
          }
       }
-
-      $this->da_impuestos["iva-repercutido"] = -1 * $this->saldo_cuenta('477%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
+      
+      $this->da_impuestos["iva-repercutido"] = $this->saldo_cuenta('477%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
       $this->da_impuestos["iva-soportado"] = $this->saldo_cuenta('472%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
       $this->da_impuestos["iva-devolver"] = $this->saldo_cuenta('470%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
       $this->da_impuestos["resultado_iva-mod303"] = $this->da_impuestos["iva-repercutido"] + $this->da_impuestos["iva-soportado"]
@@ -233,8 +233,8 @@ class dashboard_avanzado_tesoreria extends fs_controller
          case '2':
          case '3':
          case '4':
-            $this->da_impuestos['desde'] = date('1-1-' . $this->year);
-            $this->da_impuestos['hasta'] = date('31-3-' . $this->year);
+            $this->da_impuestos['desde'] = date('01-01-' . $this->year);
+            $this->da_impuestos['hasta'] = date('31-03-' . $this->year);
             break;
 
          case '5':
@@ -243,19 +243,19 @@ class dashboard_avanzado_tesoreria extends fs_controller
          case '8':
          case '9':
          case '10':
-            $this->da_impuestos['desde'] = date('1-1-' . $this->year);
-            $this->da_impuestos['hasta'] = date('30-9-' . $this->year);
+            $this->da_impuestos['desde'] = date('01-01-' . $this->year);
+            $this->da_impuestos['hasta'] = date('30-09-' . $this->year);
             break;
 
          case '11':
          case '12':
-            $this->da_impuestos['desde'] = date('1-1-' . $this->year);
+            $this->da_impuestos['desde'] = date('01-01-' . $this->year);
             $this->da_impuestos['hasta'] = date('30-11-' . $this->year);
             break;
       }
-
-      $this->da_impuestos["ventas_totales"] = $this->saldo_cuenta('7%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
-      $this->da_impuestos["gastos_totales"] = -1 * $this->saldo_cuenta('6%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
+      
+      $this->da_impuestos["ventas_totales"] = -1 * $this->saldo_cuenta('700%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
+      $this->da_impuestos["gastos_totales"] = -1 * $this->saldo_cuenta('600%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
       $this->da_impuestos["resultado"] = $this->da_impuestos["ventas_totales"] + $this->da_impuestos["gastos_totales"];
 
       if($this->da_impuestos["resultado"] < 0)
@@ -272,13 +272,10 @@ class dashboard_avanzado_tesoreria extends fs_controller
       $this->da_impuestos["pagofraccionado-mod202"] = $this->da_impuestos["sociedades"] + $this->da_impuestos["pago-ant"];
 
       /// Ahora comparamos con los datos del año anterior
-      $this->da_impuestos['desde'] = date('1-1-' . ($this->year - 1) );
+      $this->da_impuestos['desde'] = date('01-01-' . ($this->year - 1) );
       $this->da_impuestos['hasta'] = date('31-12-' . ($this->year - 1) );
 
-      if(!empty($this->config[$this->year - 1]['regularizacion']['numero']))
-      {
-         $this->da_impuestos["resultado_ejanterior"] = $this->saldo_cuenta_asiento_regularizacion('129%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"], $this->config[$this->year - 1]['regularizacion']['numero']);
-      }
+      $this->da_impuestos["resultado_ejanterior"] = $this->saldo_cuenta('129%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
 
       $this->da_impuestos["resultado_negotros"] = -1 * $this->saldo_cuenta('121%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
       $this->da_impuestos["total"] = $this->da_impuestos["resultado_ejanterior"] + $this->da_impuestos["resultado_negotros"];
@@ -293,7 +290,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
          $this->da_impuestos["sociedades_ant"] = $this->da_impuestos["total"] * $sociedades / 100;
       }
 
-      $this->da_impuestos['desde'] = date('1-1-' . $this->year);
+      $this->da_impuestos['desde'] = date('01-01-' . $this->year);
       $this->da_impuestos['hasta'] = date('31-12-' . $this->year);
       $this->da_impuestos["sociedades_adelantos"] = -1 * $this->saldo_cuenta('4709%', $this->da_impuestos["desde"], $this->da_impuestos["hasta"]);
       $this->da_impuestos["total-mod200"] = $this->da_impuestos["sociedades_ant"] + $this->da_impuestos["sociedades_adelantos"];
@@ -312,10 +309,10 @@ class dashboard_avanzado_tesoreria extends fs_controller
    {
       $saldo = 0;
       
-      if($this->db->table_exists('co_partidas') AND $this->empresa->codpais == 'ESP')
+      if( $this->db->table_exists('co_partidas') )
       {
          /// calculamos el saldo de todos aquellos asientos que afecten a caja 
-         $sql = "select sum(haber-debe) as total from co_partidas where codsubcuenta LIKE '" . $cuenta . "' and idasiento"
+         $sql = "select sum(debe-haber) as total from co_partidas where codsubcuenta LIKE '" . $cuenta . "' and idasiento"
                  . " in (select idasiento from co_asientos where fecha >= " . $this->empresa->var2str($desde)
                  . " and fecha <= " . $this->empresa->var2str($hasta) . ");";
 
@@ -333,10 +330,10 @@ class dashboard_avanzado_tesoreria extends fs_controller
    {
       $saldo = 0;
 
-      if($this->db->table_exists('co_partidas') AND $this->empresa->codpais == 'ESP')
+      if( $this->db->table_exists('co_partidas') )
       {
          /// calculamos el saldo de todos aquellos asientos que afecten a caja 
-         $sql = "select sum(haber-debe) as total from co_partidas where codsubcuenta LIKE '" . $cuenta . "' and idasiento"
+         $sql = "select sum(debe-haber) as total from co_partidas where codsubcuenta LIKE '" . $cuenta . "' and idasiento"
                  . " in (select idasiento from co_asientos where fecha >= " . $this->empresa->var2str($desde)
                  . " and fecha <= " . $this->empresa->var2str($hasta) . " and numero = " . $numasientoregularizacion . ");";
 
@@ -375,6 +372,26 @@ class dashboard_avanzado_tesoreria extends fs_controller
       foreach($sc0->all_from_cuentaesp('CAJA', $this->year) as $sc)
       {
          $this->cajas[] = $sc;
+      }
+   }
+   
+   private function get_gastos_pendientes()
+   {
+      $sql = "SELECT SUM(total) as total FROM facturasprov WHERE pagada = false;";
+      $data = $this->db->select($sql);
+      if($data)
+      {
+         $this->da_gastoscobros["gastospdtepago"] = -1 * floatval($data[0]['total']);
+      }
+   }
+   
+   private function get_cobros_pendientes()
+   {
+      $sql = "SELECT SUM(total) as total FROM facturascli WHERE pagada = false;";
+      $data = $this->db->select($sql);
+      if($data)
+      {
+         $this->da_gastoscobros["clientespdtecobro"] = floatval($data[0]['total']);
       }
    }
 }

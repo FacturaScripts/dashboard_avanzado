@@ -78,8 +78,7 @@ class dashboard_avanzado extends fs_controller
       $this->year = $year;
       $this->lastyear = $year - 1;
 
-      // Llamamos a la función que crea los arrays con los datos,
-      // pasandole este año y el anterior
+      /// Llamamos a la función que crea los arrays con los datos, pasandole este año y el anterior.
       $this->build_year($this->year);
       $this->build_year($this->lastyear);
 
@@ -121,6 +120,9 @@ class dashboard_avanzado extends fs_controller
       $this->charts['distribucion']['labels'] = '['.$labels.']';
       $this->charts['distribucion']['porc'] = '['.$porcentajes.']';
       $this->charts['distribucion']['colors'] = '['.$colores.']';
+      
+      /// reordenamos familias
+      ksort($this->ventas[$this->year]['familias']);
    }
 
    protected function build_year($year)
@@ -168,14 +170,13 @@ class dashboard_avanzado extends fs_controller
          
          $dia_mes = cal_days_in_month(CAL_GREGORIAN, $mes, $year);
 
-         $date['desde'] = date('1-' . $mes . '-' . $year);
+         $date['desde'] = date('01-' . $mes . '-' . $year);
          $date['hasta'] = date($dia_mes . '-' . $mes . '-' . $year);
 
          /**
-          *  VENTAS
+          *  VENTAS: Consulta con las lineasfacturascli
           * *****************************************************************
           */
-         // VENTAS: Consulta con las lineasfacturascli
          $sql = "select lfc.referencia, sum(lfc.pvptotal) as pvptotal from lineasfacturascli as lfc"
                  . " LEFT JOIN facturascli as fc ON lfc.idfactura = fc.idfactura"
                  . " where fc.fecha >= " . $this->empresa->var2str($date['desde'])
@@ -342,14 +343,14 @@ class dashboard_avanzado extends fs_controller
                if($cuenta)
                {
                   $gastos['descripciones'][$codcuenta] = $cuenta->descripcion;
-                  
-                  foreach($arraycuenta as $codsubcuenta => $arraysubcuenta)
+               }
+               
+               foreach($arraycuenta as $codsubcuenta => $arraysubcuenta)
+               {
+                  $subcuenta = $this->subcuenta->get_by_codigo($codsubcuenta, $year);
+                  if($subcuenta)
                   {
-                     $subcuenta = $this->subcuenta->get_by_codigo($codsubcuenta, $year);
-                     if($subcuenta)
-                     {
-                        $gastos['descripciones'][$codsubcuenta] = $subcuenta->descripcion;
-                     }
+                     $gastos['descripciones'][$codsubcuenta] = $subcuenta->descripcion;
                   }
                }
             }
@@ -457,19 +458,4 @@ class dashboard_avanzado extends fs_controller
    {
       return substr(str_shuffle('ABCDEF0123456789'), 0, 6);
    }
-
 }
-
-/*
- * Guardo el script aquí por si auto-ordeno el código y se desmontan estas variables
-                <script>
-                    var dataVentas = [{loop="$fsc->charts['totales']['ventas']"}{$value1},{/loop}];
-                    var dataGastos = [{loop="$fsc->charts['totales']['gastos']"}{$value1},{/loop}];
-                    var dataResultado = [{loop="$fsc->charts['totales']['resultado']"}{$value1},{/loop}];
-                            
-                    var distribucionLabels = {$fsc->charts['distribucion']['labels']};
-                    var distribucionPorc = {$fsc->charts['distribucion']['porc']};
-                    var distribucionColor = {$fsc->charts['distribucion']['colors']};
-       
-                </script>
- * */
