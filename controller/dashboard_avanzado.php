@@ -29,14 +29,15 @@ class dashboard_avanzado extends fs_controller
 {
    public $charts;
    public $config;
-   public $gastos;
    public $ejercicios;
+   public $familias;
+   public $gastos;
    public $lastyear;
    public $number;
    public $porc;
    public $resultado;
    public $ventas;
-   public $year;
+   public $year; /// realmente es codejercicio
    
    private $articulo;
    private $cuenta;
@@ -53,6 +54,7 @@ class dashboard_avanzado extends fs_controller
       $this->articulo = new articulo();
       $this->cuenta = new cuenta();
       $this->familia = new familia();
+      $this->get_familias();
       $this->gastos = '';
       $this->number = '<span style="color:#ccc;">0,00 €</span>';
       $this->porc = '<span style="color:#ccc;">0 %</span>';
@@ -123,10 +125,9 @@ class dashboard_avanzado extends fs_controller
          $fam_desc = 'Sin Familia';
          if($codfamilia != 'SIN_FAMILIA')
          {
-            $familia = $this->familia->get($codfamilia);
-            if($familia)
+            if( isset($this->familias[$codfamilia]) )
             {
-               $fam_desc = $familia->descripcion;
+               $fam_desc = $this->familias[$codfamilia];
             }
          }
          
@@ -140,9 +141,16 @@ class dashboard_avanzado extends fs_controller
       $this->charts['distribucion']['labels'] = '['.$labels.']';
       $this->charts['distribucion']['porc'] = '['.$porcentajes.']';
       $this->charts['distribucion']['colors'] = '['.$colores.']';
+   }
+   
+   private function get_familias()
+   {
+      $this->familias = array();
       
-      /// reordenamos familias
-      ksort($this->ventas[$this->year]['familias']);
+      foreach( $this->familia->all() as $fam )
+      {
+         $this->familias[$fam->codfamilia] = $fam->descripcion;
+      }
    }
 
    protected function build_year($year)
@@ -160,6 +168,16 @@ class dashboard_avanzado extends fs_controller
           'porc_fam' => array(),
           'porc_ref' => array(),
       );
+      
+      /// inicializamos las familias
+      foreach($this->familias as $key => $value)
+      {
+         $ventas['familias'][$key] = array();
+         $ventas['descripciones'][$key] = $value;
+         $ventas['porc_fam'][$key] = 0;
+         $ventas['total_fam'][$key] = 0;
+      }
+      
       $gastos = array(
           'cuentas' => array(),
           'total_cuenta' => array(),
@@ -409,7 +427,6 @@ class dashboard_avanzado extends fs_controller
          $ventas['porc_fam'][$codfamilia] = bround($ventas['total_fam'][$codfamilia] * 100 / $ventas_total_meses, FS_NF0_ART);
          foreach($familias as $referencia => $array)
          {
-
             $ventas['porc_ref'][$codfamilia][$referencia] = bround($ventas['total_ref'][$codfamilia][$referencia] * 100 / $ventas_total_meses, FS_NF0_ART);
          }
       }
@@ -450,10 +467,14 @@ class dashboard_avanzado extends fs_controller
          {
             $art_desc = $articulo->descripcion;
             $codfamilia = $articulo->codfamilia;
-            if(empty($codfamilia))
+            if( empty($codfamilia) )
             {
                $codfamilia = 'SIN_FAMILIA';
                $familia = 'Sin Familia';
+            }
+            else if( isset($this->familias[$codfamilia]) )
+            {
+               $familia = $this->familias[$codfamilia];
             }
             else
             {

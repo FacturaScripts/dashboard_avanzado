@@ -33,13 +33,13 @@ class dashboard_avanzado_tesoreria extends fs_controller
    public $cajas;
    public $codejercicio;
    public $config;
-   public $desde;
    public $da_gastoscobros;
    public $da_impuestos;
    public $da_reservasresultados;
    public $da_resultadoejercicioactual;
    public $da_resultadosituacion;
    public $da_tesoreria;
+   public $desde;
    public $hasta;
 
    public function __construct()
@@ -133,13 +133,13 @@ class dashboard_avanzado_tesoreria extends fs_controller
           'iva-soportado' => $this->saldo_cuenta('472%', $this->desde, $this->hasta),
           'iva-devolver' => $this->saldo_cuenta('470%', $this->desde, $this->hasta),
           'resultado_iva-mod303' => 0,
-          'ventas_totales' => -1 * $this->saldo_cuenta('700%', $this->desde, $this->hasta),
-          'gastos_totales' => -1 * $this->saldo_cuenta('600%', $this->desde, $this->hasta),
+          'ventas_totales' => $this->get_ventas_totales(),
+          'gastos_totales' => -1 * $this->get_compras_totales(),
           'resultado' => 0,
           'sociedades' => 0,
           'pago-ant' => $this->saldo_cuenta('473%', $this->desde, $this->hasta),
           'pagofraccionado-mod202' => 0,
-          'resultado_ejanterior' => $this->saldo_cuenta('129%', $this->desde, $this->hasta),
+          'resultado_ejanterior' => -1 * $this->saldo_cuenta('129%', $this->desde, $this->hasta),
           'resultado_negotros' => -1 * $this->saldo_cuenta('121%', $this->desde, $this->hasta),
           'total' => 0,
           'sociedades_ant' => 0,
@@ -206,8 +206,8 @@ class dashboard_avanzado_tesoreria extends fs_controller
        * Cuadro reservas + resultados
        */
       $this->da_reservasresultados = array(
-          'reservalegal' => $this->saldo_cuenta('112%', $this->desde, $this->hasta),
-          'reservasvoluntarias' => $this->saldo_cuenta('113%', $this->desde, $this->hasta),
+          'reservalegal' => -1 * $this->saldo_cuenta('112%', $this->desde, $this->hasta),
+          'reservasvoluntarias' => -1 * $this->saldo_cuenta('113%', $this->desde, $this->hasta),
           'resultadoejercicioanterior' => $this->saldo_cuenta('129%', $this->desde, $this->hasta) - $this->saldo_cuenta('121%', $this->desde, $this->hasta),
           'total_reservas' => 0,
       );
@@ -222,8 +222,8 @@ class dashboard_avanzado_tesoreria extends fs_controller
        * Cuadro resultados ejercicio actual
        */
       $this->da_resultadoejercicioactual = array(
-          'total_ventas' => -1 * $this->saldo_cuenta('700%', $this->desde, $this->hasta),
-          'total_gastos' => -1 * $this->saldo_cuenta('600%', $this->desde, $this->hasta),
+          'total_ventas' => $this->get_ventas_totales(),
+          'total_gastos' => -1 * $this->get_compras_totales(),
           'resultadoexplotacion' => 0,
           'amortizacioninmovintang' => $this->saldo_cuenta('680%', $this->desde, $this->hasta),
           'amortizacioninmovmat' => $this->saldo_cuenta('681%', $this->desde, $this->hasta),
@@ -344,6 +344,36 @@ class dashboard_avanzado_tesoreria extends fs_controller
       $total = 0;
       
       $sql = "SELECT SUM(total) as total FROM facturascli WHERE pagada = false;";
+      $data = $this->db->select($sql);
+      if($data)
+      {
+         $total = floatval($data[0]['total']);
+      }
+      
+      return $total;
+   }
+   
+   private function get_ventas_totales()
+   {
+      $total = 0;
+      
+      $sql = "SELECT SUM(total) as total FROM facturascli WHERE fecha >= ".$this->empresa->var2str($this->desde)
+              ." AND fecha <= ".$this->empresa->var2str($this->hasta).';';
+      $data = $this->db->select($sql);
+      if($data)
+      {
+         $total = floatval($data[0]['total']);
+      }
+      
+      return $total;
+   }
+   
+   private function get_compras_totales()
+   {
+      $total = 0;
+      
+      $sql = "SELECT SUM(total) as total FROM facturasprov WHERE fecha >= ".$this->empresa->var2str($this->desde)
+              ." AND fecha <= ".$this->empresa->var2str($this->hasta).';';
       $data = $this->db->select($sql);
       if($data)
       {
