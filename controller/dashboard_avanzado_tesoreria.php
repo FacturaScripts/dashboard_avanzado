@@ -190,7 +190,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
          $this->da_impuestos["sociedades_ant"] = $this->da_impuestos["total"] * $sociedades / 100;
       }
 
-      $this->da_impuestos["total-mod200"] = $this->da_impuestos["sociedades"] - $this->da_impuestos["sociedades_adelantos"];
+      $this->da_impuestos["total-mod200"] = $this->da_impuestos["sociedades_ant"] - $this->da_impuestos["sociedades_adelantos"];
    }
    
    private function cuadro_resultados_situacion_corto()
@@ -357,7 +357,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
    {
       $total = 0;
       
-      $sql = "SELECT SUM(total) as total FROM facturascli WHERE fecha >= ".$this->empresa->var2str($this->desde)
+      $sql = "SELECT SUM(neto) as total FROM facturascli WHERE fecha >= ".$this->empresa->var2str($this->desde)
               ." AND fecha <= ".$this->empresa->var2str($this->hasta).';';
       $data = $this->db->select($sql);
       if($data)
@@ -372,7 +372,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
    {
       $total = 0;
       
-      $sql = "SELECT SUM(total) as total FROM facturasprov WHERE fecha >= ".$this->empresa->var2str($this->desde)
+      $sql = "SELECT SUM(neto) as total FROM facturasprov WHERE fecha >= ".$this->empresa->var2str($this->desde)
               ." AND fecha <= ".$this->empresa->var2str($this->hasta).';';
       $data = $this->db->select($sql);
       if($data)
