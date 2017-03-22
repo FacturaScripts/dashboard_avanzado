@@ -28,6 +28,8 @@ require_model('subcuenta.php');
 class dashboard_avanzado extends fs_controller
 {
    public $charts;
+   public $codejercicio;
+   public $codejercicio_ant;
    public $config;
    public $ejercicios;
    public $familias;
@@ -37,7 +39,7 @@ class dashboard_avanzado extends fs_controller
    public $porc;
    public $resultado;
    public $ventas;
-   public $year; /// realmente es codejercicio
+   public $year;
    
    private $articulo;
    private $cuenta;
@@ -69,9 +71,10 @@ class dashboard_avanzado extends fs_controller
       $this->config = json_decode($fsvar->simple_get('dashboard_avanzado_config'), true);
       
       /// Obtenemos el año a filtrar, si no es el actual
-      if( isset($_POST['year']) )
+      $codejercicio = FALSE;
+      if( isset($_REQUEST['year']) )
       {
-         $year = $_POST['year'];
+         $codejercicio = $year = $_REQUEST['year'];
       }
       else
       {
@@ -79,30 +82,36 @@ class dashboard_avanzado extends fs_controller
          {
             if( date('Y', strtotime($eje->fechafin)) == date('Y') )
             {
-               $year = $eje->codejercicio;
+               $codejercicio = $eje->codejercicio;
+               $year = date('Y', strtotime($eje->fechafin));
                break;
             }
          }
       }
       
       /// seleccionamos el año anterior
+      $this->codejercicio = FALSE;
+      $this->codejercicio_ant = FALSE;
+      $this->lastyear = FALSE;
       $this->year = FALSE;
       foreach($this->ejercicios as $eje)
       {
-         if($eje->codejercicio == $year)
+         if($eje->codejercicio == $codejercicio OR date('Y', strtotime($eje->fechafin)) == $year )
          {
-            $this->year = $eje->codejercicio;
+            $this->codejercicio = $eje->codejercicio;
+            $this->year = date('Y', strtotime($eje->fechafin));
          }
          else if($this->year)
          {
-            $this->lastyear = $eje->codejercicio;
+            $this->codejercicio_ant = $eje->codejercicio;
+            $this->lastyear = date('Y', strtotime($eje->fechafin));
             break;
          }
       }
       
       /// Llamamos a la función que crea los arrays con los datos, pasandole este año y el anterior.
-      $this->build_year($this->year);
-      $this->build_year($this->lastyear);
+      $this->build_year($this->year, $this->codejercicio);
+      $this->build_year($this->lastyear, $this->codejercicio_ant);
 
       /**
        * CHARTS
@@ -153,7 +162,7 @@ class dashboard_avanzado extends fs_controller
       }
    }
 
-   protected function build_year($year)
+   protected function build_year($year, $codejercicio)
    {
       $date = array(
           'desde' => '',
@@ -375,7 +384,7 @@ class dashboard_avanzado extends fs_controller
             foreach($gastos['cuentas'] as $codcuenta => $arraycuenta)
             {
                $gastos['descripciones'][$codcuenta] = '-';
-               $cuenta = $this->cuenta->get_by_codigo($codcuenta, $year);
+               $cuenta = $this->cuenta->get_by_codigo($codcuenta, $codejercicio);
                if($cuenta)
                {
                   $gastos['descripciones'][$codcuenta] = $cuenta->descripcion;
@@ -384,7 +393,7 @@ class dashboard_avanzado extends fs_controller
                foreach($arraycuenta as $codsubcuenta => $arraysubcuenta)
                {
                   $gastos['descripciones'][$codsubcuenta] = '-';
-                  $subcuenta = $this->subcuenta->get_by_codigo($codsubcuenta, $year);
+                  $subcuenta = $this->subcuenta->get_by_codigo($codsubcuenta, $codejercicio);
                   if($subcuenta)
                   {
                      $gastos['descripciones'][$codsubcuenta] = $subcuenta->descripcion;
@@ -424,20 +433,26 @@ class dashboard_avanzado extends fs_controller
       // VENTAS: Calculamos los porcentajes con los totales globales
       foreach($ventas['familias'] as $codfamilia => $familias)
       {
-         $ventas['porc_fam'][$codfamilia] = bround($ventas['total_fam'][$codfamilia] * 100 / $ventas_total_meses, FS_NF0_ART);
-         foreach($familias as $referencia => $array)
+         if($ventas_total_meses != 0)
          {
-            $ventas['porc_ref'][$codfamilia][$referencia] = bround($ventas['total_ref'][$codfamilia][$referencia] * 100 / $ventas_total_meses, FS_NF0_ART);
+            $ventas['porc_fam'][$codfamilia] = bround($ventas['total_fam'][$codfamilia] * 100 / $ventas_total_meses, FS_NF0_ART);
+            foreach($familias as $referencia => $array)
+            {
+               $ventas['porc_ref'][$codfamilia][$referencia] = bround($ventas['total_ref'][$codfamilia][$referencia] * 100 / $ventas_total_meses, FS_NF0_ART);
+            }
          }
       }
 
       // GASTOS: Calculamos los porcentajes con los totales globales
       foreach($gastos['cuentas'] as $codcuenta => $cuenta)
       {
-         $gastos['porc_cuenta'][$codcuenta] = bround($gastos['total_cuenta'][$codcuenta] * 100 / $gastos_total_meses, FS_NF0_ART);
-         foreach($cuenta as $codsubcuenta => $subcuenta)
+         if($gastos_total_meses != 0)
          {
-            $gastos['porc_subcuenta'][$codcuenta][$codsubcuenta] = bround($gastos['total_subcuenta'][$codcuenta][$codsubcuenta] * 100 / $gastos_total_meses, FS_NF0_ART);
+            $gastos['porc_cuenta'][$codcuenta] = bround($gastos['total_cuenta'][$codcuenta] * 100 / $gastos_total_meses, FS_NF0_ART);
+            foreach($cuenta as $codsubcuenta => $subcuenta)
+            {
+               $gastos['porc_subcuenta'][$codcuenta][$codsubcuenta] = bround($gastos['total_subcuenta'][$codcuenta][$codsubcuenta] * 100 / $gastos_total_meses, FS_NF0_ART);
+            }
          }
       }
 
