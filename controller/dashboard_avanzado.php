@@ -215,192 +215,195 @@ class dashboard_avanzado extends fs_controller
          $ventas['total_mes'][$mes] = 0;
          $gastos['total_mes'][$mes] = 0;
          
-         $dia_mes = cal_days_in_month(CAL_GREGORIAN, $mes, $year);
-
-         $date['desde'] = date('01-' . $mes . '-' . $year);
-         $date['hasta'] = date($dia_mes . '-' . $mes . '-' . $year);
-
-         /**
-          *  VENTAS: Consulta con las lineasfacturascli
-          * *****************************************************************
-          */
-         $sql = "select lfc.referencia, sum(lfc.pvptotal) as pvptotal from lineasfacturascli as lfc"
-                 . " LEFT JOIN facturascli as fc ON lfc.idfactura = fc.idfactura"
-                 . " where fc.fecha >= " . $this->empresa->var2str($date['desde'])
-                 . " AND fc.fecha <= " . $this->empresa->var2str($date['hasta'])
-                 . " group by lfc.referencia";
-         
-         // VENTAS: Recorremos lineasfacturascli y montamos arrays
-         $lineas = $this->db->select($sql);
-         if($lineas)
+         if($year)
          {
-            foreach($lineas as $dl)
-            {
-               $data = $this->build_data($dl);
-               $pvptotal = $data['pvptotal'];
-               $referencia = $data['ref'];
-               $codfamilia = $data['codfamilia'];
-               $familia = $data['familia'];
-               
-               // Arrays con los datos a mostrar
-               if( isset($ventas['total_fam_mes'][$codfamilia][$mes]) )
-               {
-                  $ventas['total_fam_mes'][$codfamilia][$mes] += $pvptotal;
-               }
-               else
-               {
-                  $ventas['total_fam_mes'][$codfamilia][$mes] = $pvptotal;
-               }
-               
-               if( isset($ventas['total_fam'][$codfamilia]) )
-               {
-                  $ventas['total_fam'][$codfamilia] += $pvptotal;
-               }
-               else
-               {
-                  $ventas['total_fam'][$codfamilia] = $pvptotal;
-               }
-               
-               if( isset($ventas['total_ref'][$codfamilia][$referencia]) )
-               {
-                  $ventas['total_ref'][$codfamilia][$referencia] += $pvptotal;
-               }
-               else
-               {
-                  $ventas['total_ref'][$codfamilia][$referencia] = $pvptotal;
-               }
-               
-               $ventas['total_mes'][$mes] = $pvptotal + $ventas['total_mes'][$mes];
-               $ventas_total_meses = $pvptotal + $ventas_total_meses;
-               
-               // Array temporal con los totales (falta añadir descripción familia)
-               $ventas['familias'][$codfamilia][$referencia][$mes] = array('pvptotal' => $pvptotal);
-            }
-         }
-
-         // Las descripciones solo las necesitamos en el año seleccionado,
-         // en el año anterior se omite
-         if($year == $this->year)
-         {
-            // Recorremos ventas['familias'] crear un array con las descripciones de las familias y artículos
-            foreach($ventas['familias'] as $codfamilia => $familia)
-            {
-               foreach($familia as $referencia => $array)
-               {
-                  $dl['referencia'] = $referencia;
-                  $data = $this->build_data($dl);
-
-                  $ventas['descripciones'][$codfamilia] = $data['familia'];
-                  $ventas['descripciones'][$referencia] = $data['art_desc'];
-               }
-            }
-         }
-         
-         if( $this->db->table_exists('co_partidas') )
-         {
+            $dia_mes = cal_days_in_month(CAL_GREGORIAN, $mes, $year);
+            $date['desde'] = date('01-' . $mes . '-' . $year);
+            $date['hasta'] = date($dia_mes . '-' . $mes . '-' . $year);
+            
             /**
-             *  GASTOS
+             *  VENTAS: Consulta con las lineasfacturascli
              * *****************************************************************
              */
-            // Gastos: Consulta de las partidas y asientos del grupo 6
-            $sql = "select * from co_partidas as par"
-                    . " LEFT JOIN co_asientos as asi ON par.idasiento = asi.idasiento"
-                    . " where asi.fecha >= " . $this->empresa->var2str($date['desde'])
-                    . " AND asi.fecha <= " . $this->empresa->var2str($date['hasta'])
-                    . " AND codsubcuenta LIKE '6%'";
+            $sql = "select lfc.referencia, sum(lfc.pvptotal) as pvptotal from lineasfacturascli as lfc"
+                    . " LEFT JOIN facturascli as fc ON lfc.idfactura = fc.idfactura"
+                    . " where fc.fecha >= " . $this->empresa->var2str($date['desde'])
+                    . " AND fc.fecha <= " . $this->empresa->var2str($date['hasta'])
+                    . " group by lfc.referencia";
             
-            if($asiento_regularizacion)
+            // VENTAS: Recorremos lineasfacturascli y montamos arrays
+            $lineas = $this->db->select($sql);
+            if($lineas)
             {
-               $sql .= " AND asi.numero <> " . $this->empresa->var2str($asiento_regularizacion);
+               foreach($lineas as $dl)
+               {
+                  $data = $this->build_data($dl);
+                  $pvptotal = $data['pvptotal'];
+                  $referencia = $data['ref'];
+                  $codfamilia = $data['codfamilia'];
+                  $familia = $data['familia'];
+                  
+                  // Arrays con los datos a mostrar
+                  if( isset($ventas['total_fam_mes'][$codfamilia][$mes]) )
+                  {
+                     $ventas['total_fam_mes'][$codfamilia][$mes] += $pvptotal;
+                  }
+                  else
+                  {
+                     $ventas['total_fam_mes'][$codfamilia][$mes] = $pvptotal;
+                  }
+                  
+                  if( isset($ventas['total_fam'][$codfamilia]) )
+                  {
+                     $ventas['total_fam'][$codfamilia] += $pvptotal;
+                  }
+                  else
+                  {
+                     $ventas['total_fam'][$codfamilia] = $pvptotal;
+                  }
+                  
+                  if( isset($ventas['total_ref'][$codfamilia][$referencia]) )
+                  {
+                     $ventas['total_ref'][$codfamilia][$referencia] += $pvptotal;
+                  }
+                  else
+                  {
+                     $ventas['total_ref'][$codfamilia][$referencia] = $pvptotal;
+                  }
+                  
+                  $ventas['total_mes'][$mes] = $pvptotal + $ventas['total_mes'][$mes];
+                  $ventas_total_meses = $pvptotal + $ventas_total_meses;
+                  
+                  // Array temporal con los totales (falta añadir descripción familia)
+                  $ventas['familias'][$codfamilia][$referencia][$mes] = array('pvptotal' => $pvptotal);
+               }
             }
             
-            $sql .= " ORDER BY codsubcuenta";
-            
-            $partidas = $this->db->select($sql);
-            if($partidas)
+            // Las descripciones solo las necesitamos en el año seleccionado,
+            // en el año anterior se omite
+            if($year == $this->year)
             {
-               foreach($partidas as $p)
+               // Recorremos ventas['familias'] crear un array con las descripciones de las familias y artículos
+               foreach($ventas['familias'] as $codfamilia => $familia)
                {
-                  $codcuenta = substr($p['codsubcuenta'], 0, 3);
-                  $codsubcuenta = $p['codsubcuenta'];
-                  $pvptotal = $p['debe'] - $p['haber'];
-                  
-                  // Array con los datos a mostrar
-                  if( isset($gastos['total_cuenta_mes'][$codcuenta][$mes]) )
+                  foreach($familia as $referencia => $array)
                   {
-                     $gastos['total_cuenta_mes'][$codcuenta][$mes] += $pvptotal;
-                  }
-                  else
-                  {
-                     $gastos['total_cuenta_mes'][$codcuenta][$mes] = $pvptotal;
-                  }
-                  
-                  if( isset($gastos['total_cuenta'][$codcuenta]) )
-                  {
-                     $gastos['total_cuenta'][$codcuenta] += $pvptotal;
-                  }
-                  else
-                  {
-                     $gastos['total_cuenta'][$codcuenta] = $pvptotal;
-                  }
-                  
-                  if( isset($gastos['total_subcuenta'][$codcuenta][$codsubcuenta]) )
-                  {
-                     $gastos['total_subcuenta'][$codcuenta][$codsubcuenta] += $pvptotal;
-                  }
-                  else
-                  {
-                     $gastos['total_subcuenta'][$codcuenta][$codsubcuenta] = $pvptotal;
-                  }
-                  
-                  if( isset($gastos['total_mes'][$mes]) )
-                  {
-                     $gastos['total_mes'][$mes] += $pvptotal;
-                  }
-                  else
-                  {
-                     $gastos['total_mes'][$mes] = $pvptotal;
-                  }
-                  
-                  $gastos_total_meses = $pvptotal + $gastos_total_meses;
-                  
-                  if( isset($gastos['cuentas'][$codcuenta][$codsubcuenta][$mes]) )
-                  {
-                     $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes]['pvptotal'] += $pvptotal;
-                  }
-                  else
-                  {
-                     $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes]['pvptotal'] = $pvptotal;
+                     $dl['referencia'] = $referencia;
+                     $data = $this->build_data($dl);
+                     
+                     $ventas['descripciones'][$codfamilia] = $data['familia'];
+                     $ventas['descripciones'][$referencia] = $data['art_desc'];
                   }
                }
             }
-         }
-
-         // Las descripciones solo las necesitamos en el año seleccionado,
-         // en el año anterior se omite
-         if($year == $this->year)
-         {
-            // GASTOS: Creamos un array con las descripciones de las cuentas y subcuentas
-            foreach($gastos['cuentas'] as $codcuenta => $arraycuenta)
+            
+            if( $this->db->table_exists('co_partidas') )
             {
-               $gastos['descripciones'][$codcuenta] = '-';
-               $cuenta = $this->cuenta->get_by_codigo($codcuenta, $codejercicio);
-               if($cuenta)
+               /**
+                *  GASTOS
+                * *****************************************************************
+                */
+               // Gastos: Consulta de las partidas y asientos del grupo 6
+               $sql = "select * from co_partidas as par"
+                       . " LEFT JOIN co_asientos as asi ON par.idasiento = asi.idasiento"
+                       . " where asi.fecha >= " . $this->empresa->var2str($date['desde'])
+                       . " AND asi.fecha <= " . $this->empresa->var2str($date['hasta'])
+                       . " AND codsubcuenta LIKE '6%'";
+               
+               if($asiento_regularizacion)
                {
-                  $gastos['descripciones'][$codcuenta] = $cuenta->descripcion;
+                  $sql .= " AND asi.numero <> " . $this->empresa->var2str($asiento_regularizacion);
                }
                
-               foreach($arraycuenta as $codsubcuenta => $arraysubcuenta)
+               $sql .= " ORDER BY codsubcuenta";
+               
+               $partidas = $this->db->select($sql);
+               if($partidas)
                {
-                  $gastos['descripciones'][$codsubcuenta] = '-';
-                  $subcuenta = $this->subcuenta->get_by_codigo($codsubcuenta, $codejercicio);
-                  if($subcuenta)
+                  foreach($partidas as $p)
                   {
-                     $gastos['descripciones'][$codsubcuenta] = $subcuenta->descripcion;
+                     $codcuenta = substr($p['codsubcuenta'], 0, 3);
+                     $codsubcuenta = $p['codsubcuenta'];
+                     $pvptotal = $p['debe'] - $p['haber'];
+                     
+                     // Array con los datos a mostrar
+                     if( isset($gastos['total_cuenta_mes'][$codcuenta][$mes]) )
+                     {
+                        $gastos['total_cuenta_mes'][$codcuenta][$mes] += $pvptotal;
+                     }
+                     else
+                     {
+                        $gastos['total_cuenta_mes'][$codcuenta][$mes] = $pvptotal;
+                     }
+                     
+                     if( isset($gastos['total_cuenta'][$codcuenta]) )
+                     {
+                        $gastos['total_cuenta'][$codcuenta] += $pvptotal;
+                     }
+                     else
+                     {
+                        $gastos['total_cuenta'][$codcuenta] = $pvptotal;
+                     }
+                     
+                     if( isset($gastos['total_subcuenta'][$codcuenta][$codsubcuenta]) )
+                     {
+                        $gastos['total_subcuenta'][$codcuenta][$codsubcuenta] += $pvptotal;
+                     }
+                     else
+                     {
+                        $gastos['total_subcuenta'][$codcuenta][$codsubcuenta] = $pvptotal;
+                     }
+                     
+                     if( isset($gastos['total_mes'][$mes]) )
+                     {
+                        $gastos['total_mes'][$mes] += $pvptotal;
+                     }
+                     else
+                     {
+                        $gastos['total_mes'][$mes] = $pvptotal;
+                     }
+                     
+                     $gastos_total_meses = $pvptotal + $gastos_total_meses;
+                     
+                     if( isset($gastos['cuentas'][$codcuenta][$codsubcuenta][$mes]) )
+                     {
+                        $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes]['pvptotal'] += $pvptotal;
+                     }
+                     else
+                     {
+                        $gastos['cuentas'][$codcuenta][$codsubcuenta][$mes]['pvptotal'] = $pvptotal;
+                     }
+                  }
+               }
+            }
+            
+            // Las descripciones solo las necesitamos en el año seleccionado,
+            // en el año anterior se omite
+            if($year == $this->year)
+            {
+               // GASTOS: Creamos un array con las descripciones de las cuentas y subcuentas
+               foreach($gastos['cuentas'] as $codcuenta => $arraycuenta)
+               {
+                  $gastos['descripciones'][$codcuenta] = '-';
+                  $cuenta = $this->cuenta->get_by_codigo($codcuenta, $codejercicio);
+                  if($cuenta)
+                  {
+                     $gastos['descripciones'][$codcuenta] = $cuenta->descripcion;
+                  }
+                  
+                  foreach($arraycuenta as $codsubcuenta => $arraysubcuenta)
+                  {
+                     $gastos['descripciones'][$codsubcuenta] = '-';
+                     $subcuenta = $this->subcuenta->get_by_codigo($codsubcuenta, $codejercicio);
+                     if($subcuenta)
+                     {
+                        $gastos['descripciones'][$codsubcuenta] = $subcuenta->descripcion;
+                     }
                   }
                }
             }
          }
+         
          /**
           *  RESULTADOS
           * *****************************************************************
