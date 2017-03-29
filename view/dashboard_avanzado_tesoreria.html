@@ -58,7 +58,7 @@
                         </thead>
                         {if="$fsc->cajas"}
                         <tr>
-                           <td class="text-center">CAJAS</td>
+                           <td class="text-center">CAJAS (570xxx)</td>
                            <td>
                               <table class="table table-striped" style="margin: 0px;">
                                  {loop="$fsc->cajas"}
@@ -77,7 +77,7 @@
                         {/if}
                         {if="$fsc->bancos"}
                         <tr>
-                           <td class="text-center">BANCOS</td>
+                           <td class="text-center">BANCOS (572xxx)</td>
                            <td>
                               <table class="table table-striped" style="margin: 0px;">
                                  {loop="$fsc->bancos"}
@@ -122,15 +122,15 @@
                            <td class="text-right">{$fsc->show_precio($fsc->da_gastoscobros['clientespdtecobro'])}</td>
                         </tr>
                         <tr>
-                           <td>(c) Nóminas pendientes de pago</td>
+                           <td>(c) Nóminas pendientes de pago (465xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_gastoscobros['nominaspdtepago'])}</td>
                         </tr>
                         <tr>
-                           <td>(d) Seguridad Social pendiente de pago</td>
+                           <td>(d) Seguridad Social pendiente de pago (476xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_gastoscobros['segsocialpdtepago'])}</td>
                         </tr>
                         <tr>
-                           <td>(e) Seguridad Social pendiente de cobro</td>
+                           <td>(e) Seguridad Social pendiente de cobro (471xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_gastoscobros['segsocialpdtecobro'])}</td>
                         </tr>
                         <tr>
@@ -155,11 +155,11 @@
                            </tr>
                         </thead>
                         <tr>
-                           <td>IRPF (nóminas + profesionales MOD 111)</td>
+                           <td>IRPF (4751xxx) (nóminas + profesionales MOD 111)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_impuestos['irpf-mod111'])}</td>
                         </tr>
                         <tr>
-                           <td>IRPF (Alquiler oficina MOD 115)</td>
+                           <td>IRPF (4751xxx) (Alquiler oficina MOD 115)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_impuestos['irpf-mod115'])}</td>
                         </tr>
                         <tr>
@@ -167,24 +167,23 @@
                            <td class="text-right"></td>
                         </tr>
                         <tr>
-                           <td>(a) IVA Repercutido</td>
+                           <td>(a) IVA Repercutido (477xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_impuestos['iva-repercutido'])}</td>
                         </tr>
                         <tr>
-                           <td>(b) IVA Soportado</td>
+                           <td>(b) IVA Soportado (472xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_impuestos['iva-soportado'])}</td>
                         </tr>
                         <tr>
-                           <td>(c) IVA a devolver trimestres anteriores</td>
+                           <td>(c) IVA a devolver trimestres anteriores (470xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_impuestos['iva-devolver'])}</td>
                         </tr>
                         <tr>
                            <td>Resultado IVA (MOD 303)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_impuestos['resultado_iva-mod303'])}</td>
                         </tr>
-                        
                         <tr>
-                           <td></td>
+                           <td colspan="2" class="text-center">EJERCICIO ACTUAL</td>
                            <td class="text-right"></td>
                         </tr>
                         <tr>
@@ -212,19 +211,19 @@
                            <td class="text-right">{$fsc->show_precio($fsc->da_impuestos['pagofraccionado-mod202'])}</td>
                         </tr>
                        <tr>
-                           <td></td>
+                           <td colspan="2" class="text-center">EJERCICIO ANTERIOR</td>
                            <td class="text-right"></td>
                         </tr>
                         <tr>
-                           <td>Resultado ejercicio anterior</td>
+                           <td>Resultado (129xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_impuestos['resultado_ejanterior'])}</td>
                         </tr>
                         <tr>
-                           <td>Resultado negativo otros ejercicios</td>
+                           <td>Resultado negativo otros ejercicios (121xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_impuestos['resultado_negotros'])}</td>
                         </tr>
                         <tr>
-                           <td>Total</td>
+                           <td>Total resultado</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_impuestos['total'])}</td>
                         </tr>
                         <tr>
@@ -232,11 +231,11 @@
                            <td class="text-right">{$fsc->show_precio($fsc->da_impuestos['sociedades_ant'])}</td>
                         </tr>
                         <tr>
-                           <td>(b) Adelantos impuesto sociedades año anterior</td>
+                           <td>(b) Adelantos impuesto sociedades (4709xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_impuestos['sociedades_adelantos'])}</td>
                         </tr>
                         <tr>
-                           <td>Total a pagar o devolver (MOD 200)</td>
+                           <td>Total a pagar o devolver impuesto sociedades (MOD 200)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_impuestos['total-mod200'])}</td>
                         </tr>
                      </table>
@@ -255,7 +254,7 @@
                            </tr>
                         </thead>
                         <tr>
-                           <td>Total</td>
+                           <td>Total (Tesorería + Gastos y cobros + MOD 111 + MOD 115 + MOD 303 + MOD 202 + MOD 200)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_resultadosituacion["total"])}</td>
                         </tr>
                      </table>
@@ -272,15 +271,15 @@
                            </tr>
                         </thead>
                         <tr>
-                           <td>(a) Reserva legal</td>
+                           <td>(a) Reserva legal (112xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_reservasresultados["reservalegal"])}</td>
                         </tr>
                         <tr>
-                           <td>(b) Reservas voluntarias</td>
+                           <td>(b) Reservas voluntarias (113xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_reservasresultados["reservasvoluntarias"])}</td>
                         </tr>
                         <tr>
-                           <td>(c) Resultado ejercicio anterior</td>
+                           <td>(c) Resultado ejercicio anterior (129xxx + 121xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_reservasresultados["resultadoejercicioanterior"])}</td>
                         </tr>
                         <tr>
@@ -317,11 +316,11 @@
                            <td class="text-right"></td>
                         </tr>
                         <tr>
-                           <td>Amortizaciones inmovilizado intangible</td>
+                           <td>Amortizaciones inmovilizado intangible (680xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_resultadoejercicioactual["amortizacioninmovintang"])}</td>
                         </tr>
                         <tr>
-                           <td>Amortizaciones inmovilizado material</td>
+                           <td>Amortizaciones inmovilizado material (681xxx)</td>
                            <td class="text-right">{$fsc->show_precio($fsc->da_resultadoejercicioactual["amortizacioninmovmat"])}</td>
                         </tr>
                         <tr>

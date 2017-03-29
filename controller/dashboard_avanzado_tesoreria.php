@@ -2,8 +2,8 @@
 
 /*
  * This file is part of dashboard_avanzado
- * Copyright (C) 2017		 Itaca Software Libre contacta@itacaswl.com
- * Copyright (C) 2017      Carlos Garcia Gomez   neorazorx@gmail.com
+ * Copyright (C) 2017   Itaca Software Libre contacta@itacaswl.com
+ * Copyright (C) 2017   Carlos Garcia Gomez   neorazorx@gmail.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -131,10 +131,10 @@ class dashboard_avanzado_tesoreria extends fs_controller
           'irpf-mod115' => 0,
           'iva-repercutido' => $this->saldo_cuenta('477%', $this->desde, $this->hasta),
           'iva-soportado' => $this->saldo_cuenta('472%', $this->desde, $this->hasta),
-          'iva-devolver' => $this->saldo_cuenta('470%', $this->desde, $this->hasta),
+          'iva-devolver' => $this->saldo_cuenta('4700%', $this->desde, $this->hasta),
           'resultado_iva-mod303' => 0,
           'ventas_totales' => $this->get_ventas_totales(),
-          'gastos_totales' => -1 * $this->get_compras_totales(),
+          'gastos_totales' => -1 * $this->saldo_cuenta('600%', $this->desde, $this->hasta),
           'resultado' => 0,
           'sociedades' => 0,
           'pago-ant' => $this->saldo_cuenta('473%', $this->desde, $this->hasta),
@@ -208,7 +208,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
       $this->da_reservasresultados = array(
           'reservalegal' => -1 * $this->saldo_cuenta('112%', $this->desde, $this->hasta),
           'reservasvoluntarias' => -1 * $this->saldo_cuenta('113%', $this->desde, $this->hasta),
-          'resultadoejercicioanterior' => $this->saldo_cuenta('129%', $this->desde, $this->hasta) - $this->saldo_cuenta('121%', $this->desde, $this->hasta),
+          'resultadoejercicioanterior' => abs( $this->saldo_cuenta('129%', $this->desde, $this->hasta) ) - $this->saldo_cuenta('121%', $this->desde, $this->hasta),
           'total_reservas' => 0,
       );
       
