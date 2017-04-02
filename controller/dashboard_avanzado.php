@@ -214,6 +214,7 @@ class dashboard_avanzado extends fs_controller
          /// inicializamos
          $ventas['total_mes'][$mes] = 0;
          $gastos['total_mes'][$mes] = 0;
+         $resultado['total_mes'][$mes] = 0;
          
          if($year)
          {
@@ -408,14 +409,7 @@ class dashboard_avanzado extends fs_controller
           *  RESULTADOS
           * *****************************************************************
           */
-         if( isset($ventas['total_mes'][$mes]) )
-         {
-            $resultado['total_mes'][$mes] = bround($ventas['total_mes'][$mes] - $gastos['total_mes'][$mes], FS_NF0_ART);
-         }
-         else
-         {
-            $resultado['total_mes'][$mes] = 0;
-         }
+         $resultado['total_mes'][$mes] = bround($ventas['total_mes'][$mes] - $gastos['total_mes'][$mes], FS_NF0_ART);
       }
 
       /**

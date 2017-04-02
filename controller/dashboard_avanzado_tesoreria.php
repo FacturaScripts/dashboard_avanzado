@@ -134,7 +134,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
           'iva-devolver' => $this->saldo_cuenta('4700%', $this->desde, $this->hasta),
           'resultado_iva-mod303' => 0,
           'ventas_totales' => $this->get_ventas_totales(),
-          'gastos_totales' => -1 * $this->saldo_cuenta('600%', $this->desde, $this->hasta),
+          'gastos_totales' => -1 * $this->saldo_cuenta('6%', $this->desde, $this->hasta),
           'resultado' => 0,
           'sociedades' => 0,
           'pago-ant' => $this->saldo_cuenta('473%', $this->desde, $this->hasta),
@@ -223,7 +223,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
        */
       $this->da_resultadoejercicioactual = array(
           'total_ventas' => $this->get_ventas_totales(),
-          'total_gastos' => -1 * $this->get_compras_totales(),
+          'total_gastos' => -1 * $this->saldo_cuenta('6%', $this->desde, $this->hasta),
           'resultadoexplotacion' => 0,
           'amortizacioninmovintang' => $this->saldo_cuenta('680%', $this->desde, $this->hasta),
           'amortizacioninmovmat' => $this->saldo_cuenta('681%', $this->desde, $this->hasta),
