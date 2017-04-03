@@ -32,6 +32,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
    public $bancos;
    public $cajas;
    public $codejercicio;
+   public $codejercicio_ant;
    public $config;
    public $da_gastoscobros;
    public $da_impuestos;
@@ -49,7 +50,8 @@ class dashboard_avanzado_tesoreria extends fs_controller
 
    protected function private_core()
    {
-      $this->codejercicio = date('Y');
+      $this->codejercicio = NULL;
+      $this->codejercicio_ant = NULL;
       $this->desde = date('01-01-Y');
       $this->hasta = date('31-12-Y');
       
@@ -62,6 +64,10 @@ class dashboard_avanzado_tesoreria extends fs_controller
             $this->codejercicio = $eje->codejercicio;
             $this->desde = $eje->fechainicio;
             $this->hasta = $eje->fechafin;
+         }
+         else if($this->codejercicio)
+         {
+            $this->codejercicio_ant = $eje->codejercicio;
             break;
          }
       }
@@ -172,7 +178,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
       }
       else
       {
-         $sociedades = $this->config[$this->codejercicio]['sociedades'];
+         $sociedades = floatval($this->config[$this->codejercicio]['sociedades']);
          $this->da_impuestos["sociedades"] = -1 * $this->da_impuestos["resultado"] * $sociedades / 100;
       }
 
@@ -186,7 +192,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
       }
       else
       {
-         $sociedades = $this->config[$this->codejercicio - 1]['sociedades'];
+         $sociedades = floatval($this->config[$this->codejercicio_ant]['sociedades']);
          $this->da_impuestos["sociedades_ant"] = $this->da_impuestos["total"] * $sociedades / 100;
       }
 
