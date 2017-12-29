@@ -79,7 +79,7 @@ window.onload = function () {
                 mode: 'index',
                 intersect: true,
                 callbacks: {
-                    label: function (tooltipItem, data,data2) {
+                    label: function (tooltipItem, data) {
                         var allData = data.datasets[tooltipItem.datasetIndex].data;
                         var allData2 = data.datasets[tooltipItem.datasetIndex].data2;                        
                         var tooltipLabel = data.labels[tooltipItem.index];
