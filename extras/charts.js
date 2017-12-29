@@ -36,6 +36,7 @@ var pieChartData = {
     labels: distribucionLabels,
     datasets: [{
             data: distribucionPorc,
+            data2: distribucionTotal,
             backgroundColor: distribucionColor,
             hoverBackgroundColor: distribucionColor
         }]
@@ -78,16 +79,18 @@ window.onload = function () {
                 mode: 'index',
                 intersect: true,
                 callbacks: {
-                    label: function (tooltipItem, data) {
+                    label: function (tooltipItem, data,data2) {
                         var allData = data.datasets[tooltipItem.datasetIndex].data;
+                        var allData2 = data.datasets[tooltipItem.datasetIndex].data2;                        
                         var tooltipLabel = data.labels[tooltipItem.index];
                         var tooltipData = allData[tooltipItem.index];
+                        var tooltipData2 = allData2[tooltipItem.index];                        
                         var total = 0;
                         for (var i in allData) {
                             total += allData[i];
                         }
                         var tooltipPercentage = Math.round((tooltipData / total) * 100);
-                        return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                        return tooltipLabel + ': ' + tooltipData2 + ' (' + tooltipPercentage + '%)';
                     }
                 }
             }
