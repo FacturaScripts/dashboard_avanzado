@@ -126,11 +126,12 @@ class dashboard_avanzado extends fs_controller
 
       $i = 1;
       $count = count($this->ventas[$this->year]['porc_fam']);
-      $colores = $labels = $porcentajes = '';
+      $colores = $labels = $porcentajes = $totales = '';
       foreach($this->ventas[$this->year]['porc_fam'] as $codfamilia => $porc)
       {
          $sep = ($count == $i) ? '' : ',';
          
+         $totalaux = round($this->ventas[$this->year]['total_fam'][$codfamilia], FS_NF0);         
          $fam_desc = 'Sin Familia';
          if($codfamilia != 'SIN_FAMILIA')
          {
@@ -140,9 +141,10 @@ class dashboard_avanzado extends fs_controller
             }
          }
          
-         $labels .= '"' . $fam_desc . '"' . $sep;
+         $labels .= '"' . $fam_desc . '"' . $sep ;
          $porcentajes .= $porc . $sep;
-         $colores .= '"#' . $this->randomColor() . '"' . $sep;
+         $colores .= '"#' . $this->randomColor() . '"' . $sep;         
+         $totales .= $totalaux . $sep;
 
          ++$i;
       }
@@ -150,6 +152,7 @@ class dashboard_avanzado extends fs_controller
       $this->charts['distribucion']['labels'] = '['.$labels.']';
       $this->charts['distribucion']['porc'] = '['.$porcentajes.']';
       $this->charts['distribucion']['colors'] = '['.$colores.']';
+      $this->charts['distribucion']['totales'] = '['.$totales.']';  
    }
    
    private function get_familias()
