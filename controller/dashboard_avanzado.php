@@ -131,8 +131,7 @@ class dashboard_avanzado extends fs_controller
       {
          $sep = ($count == $i) ? '' : ',';
          
-         $totalaux = round($this->ventas[$this->year]['total_fam'][$codfamilia], FS_NF0);
-         
+         $totalaux = round($this->ventas[$this->year]['total_fam'][$codfamilia], FS_NF0);         
          $fam_desc = 'Sin Familia';
          if($codfamilia != 'SIN_FAMILIA')
          {
@@ -144,8 +143,7 @@ class dashboard_avanzado extends fs_controller
          
          $labels .= '"' . $fam_desc . '"' . $sep ;
          $porcentajes .= $porc . $sep;
-         $colores .= '"#' . $this->randomColor() . '"' . $sep;
-         
+         $colores .= '"#' . $this->randomColor() . '"' . $sep;         
          $totales .= $totalaux . $sep;
 
          ++$i;
@@ -154,8 +152,7 @@ class dashboard_avanzado extends fs_controller
       $this->charts['distribucion']['labels'] = '['.$labels.']';
       $this->charts['distribucion']['porc'] = '['.$porcentajes.']';
       $this->charts['distribucion']['colors'] = '['.$colores.']';
-      $this->charts['distribucion']['totales'] = '['.$totales.']';      
-      
+      $this->charts['distribucion']['totales'] = '['.$totales.']';  
    }
    
    private function get_familias()
