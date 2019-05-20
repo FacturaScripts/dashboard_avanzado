@@ -55,9 +55,8 @@
         </div>
         <div class="col-sm-10"></div>
     </div>
-    
     <div class="row">
-        <div class="col-md-1">
+        <div class="col-md-2">
             <h3>Ejercicio</h3>
         </div>
         <div class="col-md-3">
@@ -66,95 +65,58 @@
         <div class="col-md-4">
             <h3>Cuentas IRPF de Alquiler (separadas por comas)</h3>
         </div>        
-        <div class="col-md-4">
+        <div class="col-md-3">
             <h3>% Impuesto Sociedades</h3>
         </div>         
-        
-        
-        
     </div>
     <form class="" method="post">
         {loop="$fsc->ejercicios"}
         <div class="row">
-            <div class="col-md-1">
+            <div class="col-md-2">
                 <div class="title-ejercicio"><b>{$value1->codejercicio}</b></div>
             </div>
             <div class="col-md-3">
-
                 <div class=" form-group">
                     <div class="input-group" style="width:100%;"> 
                         <input class="form-control text-right" name="config[{$value1->codejercicio}][regularizacion][numero]" value="{$fsc->config[$value1->codejercicio]['regularizacion']['numero']}"
                                placeholder="Nº Asiento" 
                                aria-describedby="concepto-asiento">
-                        <span class="input-group-addon  {if="$fsc->config[$value1->codejercicio]['regularizacion']['error']"}danger{else}success{/if}" id="concepto-asiento">
-                                                {$fsc->config[$value1->codejercicio]['regularizacion']['concepto']}
-                                            </span>
-                        </div>
+                        <!--{$extra_class='success'}-->
+                        {if="$fsc->config[$value1->codejercicio]['regularizacion']['error']"}<!--{$extra_class='danger'}-->{/if}
+                        <span class="input-group-addon {$extra_class}" id="concepto-asiento">
+                            {$fsc->config[$value1->codejercicio]['regularizacion']['concepto']}
+                        </span>
                     </div>
+                </div>
             </div>
-                
-            <div class="col-md-3">
-
+            <div class="col-md-4">
                 <div class=" form-group">
                     <div class="input-group" style="width:100%;"> 
                         <input class="form-control text-right" name="config[{$value1->codejercicio}][irpfalquiler]" value="{$fsc->config[$value1->codejercicio]['irpfalquiler']}"
                                placeholder="Cuentas IRPF" 
                                aria-describedby="Cuentas IRPF separadas por comas">
-
-
                     </div>
-                 </div>
+                </div>
             </div>
-
-
             <div class="col-md-3">
-
                 <div class=" form-group">
                     <div class="input-group" style="width:100%;"> 
                         <input class="form-control text-right" name="config[{$value1->codejercicio}][sociedades]" value="{$fsc->config[$value1->codejercicio]['sociedades']}"
                                placeholder="% Impuesto Sociedades" 
                                aria-describedby="% Impuesto Sociedades">
-
                     </div>
-                 </div>
+                </div>
             </div>
-
-                
-       </div>
-            {/loop}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <div class="btn-group pull-right">
-                <button class="btn btn-primary" type="submit" onclick="this.disabled = true;this.form.submit();" title="Guardar">
-                    Guardar &nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-floppy-disk"></span>
-                </button>
-            </div>
-            <input type="hidden" name="save" value="1">
-        </form>
-
+        </div>
+        {/loop}
+        <div class="btn-group pull-right">
+            <button class="btn btn-primary" type="submit" onclick="this.disabled = true;this.form.submit();" title="Guardar">
+                Guardar &nbsp;&nbsp;
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+            </button>
+        </div>
+        <input type="hidden" name="save" value="1">
+    </form>
 </div>
 
 {include="footer"}
