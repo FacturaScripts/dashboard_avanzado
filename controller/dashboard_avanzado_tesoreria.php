@@ -161,7 +161,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
         if ($this->da_impuestos["resultado"] < 0) {
             $this->da_impuestos["sociedades"] = 0;
         } else {
-            $sociedades = floatval($this->config[$this->codejercicio]['sociedades']);
+            $sociedades = isset($this->config[$this->codejercicio_ant]['sociedades']) ? floatval($this->config[$this->codejercicio_ant]['sociedades']) : 0;
             $this->da_impuestos["sociedades"] = -1 * $this->da_impuestos["resultado"] * $sociedades / 100;
         }
 
@@ -172,7 +172,7 @@ class dashboard_avanzado_tesoreria extends fs_controller
         if ($this->da_impuestos["total"] < 0) {
             $this->da_impuestos["sociedades_ant"] = 0;
         } else {
-            $sociedades = floatval($this->config[$this->codejercicio_ant]['sociedades']);
+            $sociedades = isset($this->config[$this->codejercicio_ant]['sociedades']) ? floatval($this->config[$this->codejercicio_ant]['sociedades']) : 0;
             $this->da_impuestos["sociedades_ant"] = $this->da_impuestos["total"] * $sociedades / 100;
         }
 

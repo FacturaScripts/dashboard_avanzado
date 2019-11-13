@@ -184,7 +184,7 @@ class dashboard_avanzado extends fs_controller
         $ventas_total_meses = 0;
         $gastos_total_meses = 0;
 
-        $asiento_regularizacion = intval($this->config[$year]['regularizacion']['numero']);
+        $asiento_regularizacion = isset($this->config[$year]['regularizacion']['numero']) ? intval($this->config[$year]['regularizacion']['numero']) : 0;
 
         // Recorremos los meses y ejecutamos una consulta filtrando por el mes
         for ($mes = 1; $mes <= 12; $mes++) {
